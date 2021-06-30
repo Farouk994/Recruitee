@@ -1,6 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/db")
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 // Middleware
 const app = express();
@@ -11,8 +11,8 @@ app.use(express.json());
 connectDB();
 
 // Port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT,()=>{
-    console.log(" ==> Listening to Port 3000");
+    console.log(" ==> Listening to Port " + PORT);
 });
