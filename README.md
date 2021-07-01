@@ -14,18 +14,27 @@
 ------------------------------------------------------------------------------------------------------
 
 ## Recruiter Routes
-* Get Recruiter Profile 
-* Create Profile
+** Get Recruiter Profile 
+** Create Profile
 * Post jobs / Update
 * Delete Jobs
 * View User Profiles
 * Comment on User Profile
+* 
 
 ## Profile Routes
-** Get profile
+** Get my profile
 ** Create Profile
 * Get Jobs
 * Add job to liked
+
+## Jobs
+* Get Jobs
+* Post Jobs
+* Delete Job/:id
+* Like Job
+* unlike Job
+
 
 ---------------------------------------------------------------------------------------------------------
 

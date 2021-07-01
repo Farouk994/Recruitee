@@ -82,7 +82,7 @@ router.post("/", auth, async (req, res) => {
 // @route api/recruiter/jobs
 // @desc Get all jobs array
 // @Public
-router.get("/jobs", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const jobs = await Job.find().sort({ date: -1 });
     res.json(jobs);
@@ -91,5 +91,8 @@ router.get("/jobs", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+
+
 
 module.exports = router;

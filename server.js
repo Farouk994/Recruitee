@@ -17,6 +17,7 @@ app.use("/api/profile",require("./routes/api/profile"));
 app.use("/api/user",require("./routes/api/user"));
 app.use("/api/auth",require("./routes/api/auth"));
 app.use("/api/recruiter",require("./routes/api/recruiter"));
+app.use("/api/job",require("./routes/api/job"));
 
 // Port
 const PORT = process.env.PORT || 4000;
