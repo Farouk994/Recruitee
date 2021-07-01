@@ -25,13 +25,14 @@
 ## Profile Routes
 ** Get my profile
 ** Create Profile
-* Get Jobs
+** Get Jobs
 * Add job to liked
 
 ## Jobs
-* Get Jobs
-* Post Jobs
-* Delete Job/:id
+** Get Jobs
+** Post Jobs
+** Get job by id
+** Delete Job/:id
 * Like Job
 * unlike Job
 

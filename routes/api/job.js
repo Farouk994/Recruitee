@@ -12,11 +12,13 @@ const Recruiter = require("../../models/Recruiter");
 
 router.post(
   "/",
- [ auth,
-  check("company", "company is required").notEmpty(),
-  check("description", "description is required").notEmpty(),
-  check("salary", "salary is required").notEmpty(),
-  check("title", "title is required").notEmpty()],
+  [
+    auth,
+    check("company", "company is required").notEmpty(),
+    check("description", "description is required").notEmpty(),
+    check("salary", "salary is required").notEmpty(),
+    check("title", "title is required").notEmpty(),
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -36,7 +38,7 @@ router.post(
         user: req.user.id,
       });
 
-        console.log(newJob)
+      console.log(newJob);
       const job = await newJob.save();
       res.json(job);
       console.log(job);
@@ -52,13 +54,56 @@ router.post(
 // @route Private
 
 router.get("/", auth, async (req, res) => {
-    try {
-      const jobs = await Job.find().sort({ date: -1 });
-      res.json(jobs);
-    } catch (err) {
-      console.log(err.message);
-      res.status(500).send("Server Error");
+  try {
+    const job = await Job.find().sort({ date: -1 });
+    res.json(job);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route GET api/job/:id
+// @route Get a Job
+// @route Private
+router.get("/:id", auth, async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) {
+      return res.status(404).json({ msg: "Job not found" });
     }
-  });
+    res.json(job);
+    console.log(job);
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Job not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route Delete api/job/:id
+// @route Delete a Job
+// @route Private
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) {
+      return res.status(404).json({ msg: "Job not found" });
+    }
+    if (job.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "User Not Authorised" });
+    }
+    await job.remove();
+    res.json({ msg: "Job Removed" });
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Job not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
