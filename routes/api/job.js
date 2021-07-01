@@ -5,6 +5,7 @@ const auth = require("../../middleware/auth");
 const Job = require("../../models/Job");
 const User = require("../../models/User");
 const Recruiter = require("../../models/Recruiter");
+const checkObjectId = require('../../middleware/checkObjectId');
 
 // @route /api/job/
 // @desc Create a Job Posting
@@ -102,6 +103,29 @@ router.delete("/:id", auth, async (req, res) => {
     if (err.kind === "ObjectId") {
       return res.status(404).json({ msg: "Job not found" });
     }
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    PUT api/job/like/:id
+// @desc     Like a job
+// @access   Private
+router.put("/like/:id", auth, checkObjectId("id"), async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+
+    // Check if the post has already been liked
+    if (job.likes.some((like) => like.user.toString() === req.user.id)) {
+      return res.status(400).json({ msg: "Job already liked" });
+    }
+
+    job.likes.unshift({ user: req.user.id });
+
+    await job.save();
+
+    return res.json(job.likes);
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
