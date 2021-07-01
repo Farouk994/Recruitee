@@ -5,6 +5,7 @@ const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+const Job = require("../../models/Job");
 
 // @route GET api/profile/me
 // @route Private
@@ -24,25 +25,26 @@ router.get("/me", auth, async (req, res) => {
         .status(400)
         .json({ msg: "There is no profile for this user, try again" });
     }
+    profile.save();
     res.json(profile);
   } catch (err) {
     res.status(500).send("Server Error");
   }
 });
 
-// @route GET api/users/ 
+// @route GET api/users/
 // @DESC get PROFILE by UserID
 // @access Public
 // Route for finding all user Profiles
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
-    const profiles = await Profile.find().populate(
+    const profile = await Profile.find().populate(
       "user",
       ["name", "avatar"],
       User
     );
-    res.json(profiles);
-    console.log(profiles);
+    res.json(profile);
+    console.log(profile);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server has an Error");
@@ -98,7 +100,7 @@ router.post(
     if (bio) profileFields.bio = bio;
     if (status) profileFields.status = status;
     if (githubusername) profileFields.githubusername = githubusername;
-    FIXME:// if (skills) {
+    // if (skills) {
     //   console.log("eagle");
     //   console.log("Boss");
     //   profileFields.skills = skills
@@ -107,10 +109,8 @@ router.post(
     //   console.log(skill);
     // }
 
-    // All user social info will be stored in this same object profilefields = {...{..}}
-
     // Build Social Obj
-    profileFields.social = {};
+    FIXME: profileFields.social = {};
     if (github) profileFields.social.github = github;
     if (twitter) profileFields.social.twitter = twitter;
     if (facebook) profileFields.social.facebook = facebook;
@@ -141,6 +141,11 @@ router.post(
     res.send("Profile Created");
   }
 );
+
+// @route PUT api/profile/save/:id
+// @desc save job
+// @route Private
+
 
 // @route /api/
 

@@ -19,31 +19,34 @@ const RecruiterSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  bio: {
+  description: {
     type: String,
   },
-  jobs: [
-    {
-      title: {
-        type: String,
-        required: true,
-      },
-      company: {
-        type: String,
-        required: true,
-      },
-      location: {
-        type: String,
-      },
-      salary: {
-        type: Number,
-        required: true,
-      },
-      description: {
-        type: String,
-      },
-    },
-  ],
+  salary: {
+    type: String,
+  },
+//   jobs: [
+//     {
+//       title: {
+//         type: String,
+//         required: true,
+//       },
+//       company: {
+//         type: String,
+//         required: true,
+//       },
+//       location: {
+//         type: String,
+//       },
+//       salary: {
+//         type: Number,
+//         required: true,
+//       },
+//       description: {
+//         type: String,
+//       },
+//     },
+//   ],
   social: {
     email: {
       type: String,

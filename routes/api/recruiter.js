@@ -92,6 +92,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+// @route GET api/recruiter/all
+// @DESC get all Recruiters
+// @access Public
+// Route for finding all Recruiter Profiles
+router.get("/all", async (req, res) => {
+  try {
+    const recruiter = await Recruiter.find().populate(
+      "user",
+      ["name", "avatar"],
+      User
+    );
+    res.json(recruiter);
+    console.log(recruiter);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server has an Error");
+  }
+});
 
 
 

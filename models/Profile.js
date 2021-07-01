@@ -87,6 +87,12 @@ const ProfileSchema = new mongoose.Schema({
       },
     },
   ],
+  jobs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+    },
+  ],
   social: {
     github: {
       type: String,

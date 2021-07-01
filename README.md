@@ -12,29 +12,29 @@
 * I can save user profiles
 
 ------------------------------------------------------------------------------------------------------
+# Plan
 
 ## Recruiter Routes
 ** Get Recruiter Profile 
 ** Create Profile
-* Post jobs / Update
+** Post jobs / Update
 * Delete Jobs
 * View User Profiles
-* Comment on User Profile
-* 
+* Array containing jobs
 
 ## Profile Routes
 ** Get my profile
 ** Create Profile
 ** Get Jobs
-* Add job to liked
+* Array containing jobs
 
 ## Jobs
 ** Get Jobs
 ** Post Jobs
 ** Get job by id
 ** Delete Job/:id
-* Like Job
-* unlike Job
+** Like Job
+** unlike Job
 
 
 ---------------------------------------------------------------------------------------------------------

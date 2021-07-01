@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const JobSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: "user",
   },
   title: {
     type: String,
@@ -24,7 +24,7 @@ const JobSchema = new mongoose.Schema({
     {
       user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
+        ref: "user",
       },
     },
   ],
@@ -36,7 +36,7 @@ const JobSchema = new mongoose.Schema({
   },
   recruiter: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: "user",
   },
   date: {
     type: Date,
@@ -44,6 +44,6 @@ const JobSchema = new mongoose.Schema({
   },
 });
 
-const Jobs = mongoose.model("Jobs", JobSchema);
+const Jobs = mongoose.model("Job", JobSchema);
 
 module.exports = Jobs;
