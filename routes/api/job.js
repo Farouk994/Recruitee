@@ -130,4 +130,42 @@ router.put("/like/:id", auth, checkObjectId("id"), async (req, res) => {
   }
 });
 
+// @route PUT api/job/unlike/:id
+// @route unLike a job
+// @route Private
+router.put("/unlike/:id", auth, async (req, res) => {
+    try {
+      const job = await Job.findById(req.params.id);
+      // If job exists
+      if (!job) {
+        return res.status(404).json({ msg: "Job not found" });
+      }
+      // Check if job has already been liked
+      if (
+        job.likes.filter((like) => like.user.toString() === req.user.id)
+          .length === 0
+      ) {
+        return res.status(400).json({ msg: "Job has not been liked" });
+      }
+  
+      // job.likes.unshift({ user: req.user.id });
+  
+      // GET remove index
+      const removeIndex = job.likes
+        .map((like) => like.user.toString())
+        .indexOf(req.user.id);
+      job.likes.splice(removeIndex, 1);
+      await job.save();
+  
+      res.json(job.likes);
+    } catch (err) {
+      console.log(err.message);
+      if (err.kind === "ObjectId") {
+        return res.status(404).json({ msg: "Job not found" });
+      }
+      res.status(500).send("Server Error");
+    }
+  });
+
+
 module.exports = router;
