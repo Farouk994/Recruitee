@@ -30,7 +30,7 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
-// @route GET api/users
+// @route GET api/users/ 
 // @DESC get PROFILE by UserID
 // @access Public
 // Route for finding all user Profiles
@@ -141,5 +141,7 @@ router.post(
     res.send("Profile Created");
   }
 );
+
+// @route /api/
 
 module.exports = router;

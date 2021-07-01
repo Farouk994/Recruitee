@@ -11,4 +11,23 @@
 * I can view user profiles
 * I can save user profiles
 
+------------------------------------------------------------------------------------------------------
+
+## Recruiter Routes
+* Get Recruiter Profile 
+* Create Profile
+* Post jobs / Update
+* Delete Jobs
+* View User Profiles
+* Comment on User Profile
+
+## Profile Routes
+** Get profile
+** Create Profile
+* Get Jobs
+* Add job to liked
+
+---------------------------------------------------------------------------------------------------------
+
+
 
