@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 function Copyright() {
   return (
@@ -40,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
         : theme.palette.grey[900],
     backgroundSize: "cover",
     backgroundPosition: "center center",
-   
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -63,6 +63,41 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
+  });
+
+  const { email, password } = formData;
+
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const newUser = {
+      email,
+      password,
+    };
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const body = JSON.stringify(newUser);
+      const res = await axios.post(
+        "http://localhost:4000/api/auth/",
+        body,
+        config
+      );
+      console.log(res.data);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
 
   return (
     <Grid container component='main' className={classes.root}>
@@ -76,7 +111,11 @@ export default function Login() {
           <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={(e) => onSubmit(e)}
+          >
             <TextField
               variant='outlined'
               margin='normal'
@@ -86,6 +125,9 @@ export default function Login() {
               label='Email Address'
               name='email'
               autoComplete='email'
+              value={email}
+              minLength='6'
+              onChange={(e) => onChange(e)}
               autoFocus
             />
             <TextField
@@ -98,6 +140,8 @@ export default function Login() {
               type='password'
               id='password'
               autoComplete='current-password'
+              value={password}
+              onChange={(e) => onChange(e)}
             />
             <FormControlLabel
               control={<Checkbox value='remember' color='primary' />}

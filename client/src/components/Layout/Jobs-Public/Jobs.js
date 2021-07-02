@@ -20,12 +20,18 @@ const Jobs = () => {
   }, []);
 
   return (
-    <div>
-      <ul>
-        {jobs.map((job) => {
-          return <li>{job.title}</li>;
-        })}
-      </ul>
+    <div className="container">
+      {jobs.map((job) => {
+        return (
+          <ul >
+            <li>Title : {job.title}</li>
+            <li>Company : {job.company}</li>
+            <li>Salary : {job.salary}</li>
+            <li>Description: {job.description}</li>
+            <li>Recruiter : {job.name}</li>
+          </ul>
+        );
+      })}
     </div>
   );
 };
