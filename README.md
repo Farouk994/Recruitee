@@ -1,5 +1,7 @@
 # Recruitee
 
+To start the app : "npm run dev"
+
 ## User
 * As a user i want to be having a profile
 * As a user i want to save jobs to my profile
