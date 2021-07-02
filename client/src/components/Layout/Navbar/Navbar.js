@@ -11,7 +11,7 @@ function NavBar() {
       <nav className='navbar' >
         <div className='nav-container container'>
           <NavLink exact to='/' className='nav-logo'>
-            Recruitee
+           Recruitee<span className="dot">.</span>
           </NavLink>
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
@@ -51,7 +51,7 @@ function NavBar() {
             <li className='nav-item'>
               <NavLink
                 exact
-                to='/profile'
+                to='/login'
                 activeClassName='active'
                 className='nav-links'
                 onClick={handleClick}

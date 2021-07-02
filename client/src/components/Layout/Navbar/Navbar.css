@@ -2,6 +2,11 @@
     margin: 0;
     padding: 0;
   }
+
+  .dot {
+    color : red;
+    font-size : 50px;
+  }
   .navbar {
     background-color: #084c8b;
     height: 80px;
@@ -118,6 +123,6 @@
       transform: translate(-100%, 60%);
       font-size: 1.8rem;
       cursor: pointer;
-      color: #ffdd40;
+      color: crimson;
     }
   }
