@@ -36,6 +36,12 @@
 ** Like Job
 ** unlike Job
 
+I will finishing up during the weekend and also update the readme.
+
+## TODO
+* Complete Routes
+* Finish Profiles
+* Update state during authentication
 
 ---------------------------------------------------------------------------------------------------------
 
