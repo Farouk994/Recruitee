@@ -6,11 +6,10 @@ const Jobs = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await axios
+     await axios
         .get("http://localhost:4000/api/job/")
         .then((res) => {
           setJob(res.data);
-          console.log(res.data);
         })
         .catch((err) => {
           console.log(err);

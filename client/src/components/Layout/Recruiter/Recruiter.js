@@ -1,20 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import "./Landing.css";
+import { Link} from "react-router-dom";
+import "./Recruiter.css"
 
-const Landing = () => {
+const Recruiter = () => {
   return (
     <div>
-      <section className='landing'>
+  <section className='landing2'>
         <div className='dark-overlay'>
           <div className='landing-inner'>
             <h1 className='x-large'>
               {" "}
-              <em>Recruitee+</em>{" "}
+              <em>Become a Recruitee+ </em>{" "}
             </h1>
             <p className='lead'>
-              Join the community to find the job that suites and also become a
-              recruiter today
+              Join 10,000+ recruiters today and make the best impact
             </p>
             <div className='buttons'>
               <Link to='/register' className='btn btn-primary btn-lg'>
@@ -27,8 +26,9 @@ const Landing = () => {
           </div>
         </div>
       </section>
+
     </div>
   );
 };
 
-export default Landing;
+export default Recruiter;

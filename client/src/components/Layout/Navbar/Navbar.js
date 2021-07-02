@@ -1,5 +1,5 @@
-import { BrowserRouter, Switch, Route, NavLink } from "react-router-dom";
-import React, { useState, Nav } from "react";
+import { NavLink } from "react-router-dom";
+import React, {  } from "react";
 import "./Navbar.css";
 
 function NavBar() {
@@ -12,7 +12,6 @@ function NavBar() {
         <div className='nav-container container'>
           <NavLink exact to='/' className='nav-logo'>
             Recruitee
-            <i className='fa fa-code'></i>
           </NavLink>
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
@@ -41,7 +40,7 @@ function NavBar() {
             <li className='nav-item'>
               <NavLink
                 exact
-                to='/blog'
+                to='/recruiter'
                 activeClassName='active'
                 className='nav-links'
                 onClick={handleClick}
@@ -52,7 +51,7 @@ function NavBar() {
             <li className='nav-item'>
               <NavLink
                 exact
-                to='/contact'
+                to='/profile'
                 activeClassName='active'
                 className='nav-links'
                 onClick={handleClick}

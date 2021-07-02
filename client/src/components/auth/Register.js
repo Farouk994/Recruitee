@@ -69,21 +69,18 @@ const Register = () => {
     password2: "",
   });
 
-  const { name, email, password, password2 } = formData;
+  const { name, email, password } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (password !== password2) {
-      console.log("Password does not Match");
-    } else {
       const newUser = {
         name,
         email,
         password,
-        password2
+    
       };
       try {
         const config = {
@@ -97,7 +94,7 @@ const Register = () => {
       } catch (err) {
         console.log(err.response.data);
       }
-    }
+    
   };
 
   return (
@@ -158,19 +155,7 @@ const Register = () => {
               value={password}
               onChange={(e) => onChange(e)}
             />
-            <TextField
-              variant='outlined'
-              margin='normal'
-              required
-              fullWidth
-              name='password2'
-              label='Password2'
-              type='password2'
-              id='password2'
-              autoComplete='current-password'
-              value={password2}
-              onChange={(e) => onChange(e)}
-            />
+    
             <FormControlLabel
               control={<Checkbox value='remember' color='primary' />}
               label='Remember me'

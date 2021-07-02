@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -14,6 +14,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
+// import { AuthContext } from '../../context/auth-context'
 
 function Copyright() {
   return (
@@ -93,11 +94,15 @@ export default function Login() {
         body,
         config
       );
+      localStorage.setItem('token',res.data.token)
       console.log(res.data);
     } catch (err) {
       console.log(err.response.data);
     }
-  };
+    
+};
+
+
 
   return (
     <Grid container component='main' className={classes.root}>

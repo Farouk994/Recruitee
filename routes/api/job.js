@@ -51,10 +51,10 @@ router.post(
 );
 
 // @route GET api/job
-// @route Get all Jobs
-// @route Public
+// @desc Get all Jobs
+// @route Public for now
 
-router.get("/", async (req, res) => {
+router.get("/",  async (req, res) => {
   try {
     const job = await Job.find().sort({ date: -1 });
     res.json(job);
