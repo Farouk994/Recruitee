@@ -5,7 +5,7 @@
 
   .dot {
     color : red;
-    font-size : 50px;
+    /* font-size : 50px; */
   }
   .navbar {
     background-color: #084c8b;
@@ -47,8 +47,8 @@
   }
   
   .nav-links {
+    text-decoration: none !important;
     color: #fff;
-    text-decoration: none;
     padding: 0.5rem 1rem;
     height: 100%;
     border-bottom: 3px solid transparent;
@@ -73,10 +73,11 @@
   
   .nav-item:hover:after {
     width: 100%;
-    background: #ffdd40;
+    background: red;
   }
   
   .nav-item .active {
+    text-decoration: none !important;
     color: #ffdd40;
     border: 1px solid #ffdd40;
   }

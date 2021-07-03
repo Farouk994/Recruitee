@@ -11,7 +11,7 @@ function NavBar() {
       <nav className='navbar' >
         <div className='nav-container container'>
           <NavLink exact to='/' className='nav-logo'>
-           Recruitee<span className="dot">.</span>
+           Recruite<span className="dot">ǝ.</span>
           </NavLink>
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
