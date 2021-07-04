@@ -42,6 +42,25 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
+// @route GET api/users
+// @DESC get PROFILE by UserID
+// @access Public
+// Route for finding all user Profiles
+TODO: router.get("/profile", async (req, res) => {
+  try {
+    const recruiter = await Recruiter.find().populate(
+      "user",
+      ["name", "avatar"],
+      User
+    );
+    res.json(recruiter);
+    // console.log(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server has an Error");
+  }
+});
+
 // @route api/recruiter/
 // @desc Create User Profile
 // @Private
@@ -77,6 +96,29 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
+// @route api/recruiter/profile/:id
+// @desc Get Recruiter Profile
+// @Private
+router.get("/:user_id", auth, async (req, res) => {
+  try {
+    const recruiter = await Recruiter.findOne({
+      user: req.params.user_id,
+      // Get Recruiter Profile
+    }).populate("User", ["name", "avatar"], User);
+    res.json(recruiter);
+    if (!recruiter) {
+      res.status(400).json({ msg: "Recruiter Not Found" });
+    }
+    console.log(recruiter);
+  } catch (err) {
+    if (err.kind === "ObjectId") {
+      res.status(400).json({ msg: "Recruiter Not Found" });
+    }
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 /////////////////////////////////////////////////////////////////////////////
 
 // @route api/recruiter/jobs
@@ -91,6 +133,7 @@ router.get("/", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 // @route GET api/recruiter/all
 // @DESC get all Recruiters
@@ -110,7 +153,5 @@ router.get("/all", async (req, res) => {
     res.status(500).send("Server has an Error");
   }
 });
-
-
 
 module.exports = router;

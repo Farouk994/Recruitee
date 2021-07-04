@@ -27,8 +27,8 @@ const JobCard = () => {
           <>
           <br></br>
             <div className='card'>
-              <ul className="box">
-                <br></br>
+              <ul className="box lead">
+              
                 <li>
                   Position : <h5>{job.title}</h5>
                 </li>

@@ -5,7 +5,8 @@ const auth = require("../../middleware/auth");
 const Job = require("../../models/Job");
 const User = require("../../models/User");
 const Recruiter = require("../../models/Recruiter");
-const checkObjectId = require('../../middleware/checkObjectId');
+const checkObjectId = require("../../middleware/checkObjectId");
+const Jobs = require("../../models/Job");
 
 // @route /api/job/
 // @desc Create a Job Posting
@@ -54,7 +55,7 @@ router.post(
 // @desc Get all Jobs
 // @route Public for now
 
-router.get("/",  async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const job = await Job.find().sort({ date: -1 });
     res.json(job);
@@ -81,6 +82,24 @@ router.get("/:id", auth, async (req, res) => {
       return res.status(404).json({ msg: "Job not found" });
     }
     res.status(500).send("Server Error");
+  }
+});
+
+// @route api/job/recruiter/:id
+// @desc Get all jobs by recuiter
+// @access Private
+router.get("/recruiter/:id", auth, async (req, res) => {
+  try {
+    const jobs = await Jobs.find({ user: req.params.id }).sort({ date: -1 });
+    console.log(jobs);
+    if (!jobs) {
+      return res
+        .status(400)
+        .json({ msg: "There are no jobs right now, try again" });
+    }
+    res.json(jobs);
+  } catch (err) {
+    res.status(500).send("Server Error Issue");
   }
 });
 
@@ -134,38 +153,37 @@ router.put("/like/:id", auth, checkObjectId("id"), async (req, res) => {
 // @route unLike a job
 // @route Private
 router.put("/unlike/:id", auth, async (req, res) => {
-    try {
-      const job = await Job.findById(req.params.id);
-      // If job exists
-      if (!job) {
-        return res.status(404).json({ msg: "Job not found" });
-      }
-      // Check if job has already been liked
-      if (
-        job.likes.filter((like) => like.user.toString() === req.user.id)
-          .length === 0
-      ) {
-        return res.status(400).json({ msg: "Job has not been liked" });
-      }
-  
-      // job.likes.unshift({ user: req.user.id });
-  
-      // GET remove index
-      const removeIndex = job.likes
-        .map((like) => like.user.toString())
-        .indexOf(req.user.id);
-      job.likes.splice(removeIndex, 1);
-      await job.save();
-  
-      res.json(job.likes);
-    } catch (err) {
-      console.log(err.message);
-      if (err.kind === "ObjectId") {
-        return res.status(404).json({ msg: "Job not found" });
-      }
-      res.status(500).send("Server Error");
+  try {
+    const job = await Job.findById(req.params.id);
+    // If job exists
+    if (!job) {
+      return res.status(404).json({ msg: "Job not found" });
     }
-  });
+    // Check if job has already been liked
+    if (
+      job.likes.filter((like) => like.user.toString() === req.user.id)
+        .length === 0
+    ) {
+      return res.status(400).json({ msg: "Job has not been liked" });
+    }
 
+    // job.likes.unshift({ user: req.user.id });
+
+    // GET remove index
+    const removeIndex = job.likes
+      .map((like) => like.user.toString())
+      .indexOf(req.user.id);
+    job.likes.splice(removeIndex, 1);
+    await job.save();
+
+    res.json(job.likes);
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Job not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
