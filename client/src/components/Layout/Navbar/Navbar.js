@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import React, {  } from "react";
+import React from "react";
 import "./Navbar.css";
 
 function NavBar() {
@@ -8,10 +8,10 @@ function NavBar() {
   const handleClick = () => setClick(!click);
   return (
     <>
-      <nav className='navbar' >
+      <nav className='navbar'>
         <div className='nav-container container'>
-          <NavLink exact to='/' className='nav-logo'>
-           Recruite<span className="dot">ǝ.</span>
+          <NavLink exact to='/' className='nav-logo nav_link'>
+            Recruite<span className='dot'>ǝ.</span>
           </NavLink>
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
@@ -56,7 +56,7 @@ function NavBar() {
                 className='nav-links'
                 onClick={handleClick}
               >
-               Profile
+                Profile
               </NavLink>
             </li>
           </ul>

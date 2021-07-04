@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./Jobs.css"
+import "./Jobs.css";
 
 const JobCard = () => {
   const [jobs, setJob] = useState([]);
@@ -20,15 +20,18 @@ const JobCard = () => {
     fetchData();
   }, []);
 
+  // function changeBackground(e) {
+  //   e.target.style.background = 'red';
+  // }
+
   return (
     <div>
       {jobs.map((job) => {
         return (
           <>
-          <br></br>
+            <br></br>
             <div className='card'>
-              <ul className="box lead">
-              
+              <ul className='box lead'>
                 <li>
                   Position : <h5>{job.title}</h5>
                 </li>
@@ -45,9 +48,12 @@ const JobCard = () => {
                   Recruiter Details: <strong>{job.name}</strong>
                 </li>
               </ul>
-                <Link to='/login'>
-                  <button className='btn btn-primary'>Save</button>
-                </Link>
+              <div>
+                <a href='/login'>
+                  <button className="btn" style={{color:"limegreen"}}>Save</button>
+                </a>
+                  <button className ="btn delete" style={{color:"crimson"}}>Delete</button>
+              </div>
             </div>
             <br></br>
           </>

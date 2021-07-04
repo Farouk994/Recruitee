@@ -27,6 +27,22 @@
     height: 80px;
     max-width: 1500px;
   }
+
+  nav ul li NavLink {
+    text-decoration : none;
+  }
+
+  nav ul li NavLink:hover {
+    color:white;
+    background-color: white;
+  }
+
+  .nav .nav_link:hover{
+    
+    cursor: pointer;
+    color: red; 
+    
+  }
   
   .nav-logo {
     color: white;
@@ -78,8 +94,8 @@
   
   .nav-item .active {
     text-decoration: none !important;
-    color: #ffdd40;
-    border: 1px solid #ffdd40;
+    /* color: crimson; */
+    border: 1px solid crimson;
   }
   
   .nav-icon {
@@ -107,7 +123,7 @@
       z-index: 1;
     }
     .nav-item .active {
-      color: yellow;
+      color: crimson;
       border: none;
     }
     .nav-links {

@@ -169,6 +169,23 @@ router.post(
 // @desc save job
 // @route Private
 
+router.post("/save/:id", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    const job = await Job.findById(req.params.id);
+
+   
+
+    job.comments.unshift(newComment);
+    await post.save();
+    res.json(post.comments);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error");
+  }
+  res.send("Post Route");
+});
+
 // @route /api/
 
 module.exports = router;

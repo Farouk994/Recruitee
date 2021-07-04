@@ -5,3 +5,7 @@
 .box {
   list-style-type: none;
 }
+
+.delete:focus, .delete:focus, [type="submit"]:focus {
+  outline: none;
+}
