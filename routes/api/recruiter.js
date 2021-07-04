@@ -104,7 +104,7 @@ router.get("/:user_id", auth, async (req, res) => {
     const recruiter = await Recruiter.findOne({
       user: req.params.user_id,
       // Get Recruiter Profile
-    }).populate("User", ["name", "avatar"], User);
+    }).populate("user", ["name", "avatar"], User);
     res.json(recruiter);
     if (!recruiter) {
       res.status(400).json({ msg: "Recruiter Not Found" });
@@ -133,7 +133,6 @@ router.get("/", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
 
 // @route GET api/recruiter/all
 // @DESC get all Recruiters

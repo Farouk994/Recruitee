@@ -32,6 +32,29 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
+// @route api/profile/:id
+// @desc Get Profile by ID
+// @Private
+router.get("/:user_id", auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id,
+      // Get Recruiter Profile
+    }).populate("user", ["name", "avatar"], User);
+    res.json(profile);
+    if (!profile) {
+      res.status(400).json({ msg: "Profile Not Found, try again" });
+    }
+    console.log(profile);
+  } catch (err) {
+    if (err.kind === "ObjectId") {
+      res.status(400).json({ msg: "Profile Not Found, try again" });
+    }
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route GET api/users/
 // @DESC get PROFILE by UserID
 // @access Public
@@ -126,15 +149,15 @@ router.post(
         profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: profileFields },
-          { new: true }
+          { new: true, upsert: true, setDefaultsOnInsert: true }
         );
-        return res.json(profile);
       }
 
       // Create Profile and save it inside the databse
       profile = new Profile(profileFields);
       await profile.save();
       res.json(profile);
+      return res.json(profile);
     } catch (err) {
       res.status(500).send("Server Error");
     }
@@ -145,7 +168,6 @@ router.post(
 // @route PUT api/profile/save/:id
 // @desc save job
 // @route Private
-
 
 // @route /api/
 
