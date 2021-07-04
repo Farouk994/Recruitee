@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import {} from "react-router-dom";
 import "./Jobs.css";
 
 const JobCard = () => {
@@ -50,9 +50,15 @@ const JobCard = () => {
               </ul>
               <div>
                 <a href='/login'>
-                  <button className="btn" style={{color:"limegreen"}}>Save</button>
+                  <button className='btn save' onclick="this.blur()" style={{ color: "limegreen" }}>
+                    Save
+                  </button>
                 </a>
-                  <button className ="btn delete" style={{color:"crimson"}}>Delete</button>
+                <a href='/register'>
+                  <button className='btn delete' style={{ color: "crimson" }}>
+                    Delete
+                  </button>
+                </a>
               </div>
             </div>
             <br></br>
