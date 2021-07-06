@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -13,6 +13,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
+import { connect } from "react-redux";
+import { setAlert } from "../../actions/alert";
+import PropTypes from "prop-types";
 
 function Copyright() {
   return (
@@ -60,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Register = () => {
+const Register = ({ setAlert }) => {
   const classes = useStyles();
   const [formData, setFormData] = useState({
     name: "",
@@ -69,19 +72,22 @@ const Register = () => {
     password2: "",
   });
 
-  const { name, email, password } = formData;
+  const { name, email, password, password2 } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-      const newUser = {
-        name,
-        email,
-        password,
-    
-      };
+    const newUser = {
+      name,
+      email,
+      password,
+      password2,
+    };
+    if (password !== password2) {
+      setAlert("Passwords do not match, try again", "danger");
+    } else {
       try {
         const config = {
           headers: {
@@ -89,12 +95,16 @@ const Register = () => {
           },
         };
         const body = JSON.stringify(newUser);
-        const res = await axios.post("http://localhost:4000/api/user/", body, config);
+        const res = await axios.post(
+          "http://localhost:4000/api/user/",
+          body,
+          config
+        );
         console.log(res.data);
       } catch (err) {
         console.log(err.response.data);
       }
-    
+    }
   };
 
   return (
@@ -155,7 +165,20 @@ const Register = () => {
               value={password}
               onChange={(e) => onChange(e)}
             />
-    
+            <TextField
+              variant='outlined'
+              margin='normal'
+              required
+              fullWidth
+              name='password2'
+              label='Confirm Password'
+              type='password'
+              id='password2'
+              autoComplete='current-password'
+              value={password2}
+              onChange={(e) => onChange(e)}
+            />
+
             <FormControlLabel
               control={<Checkbox value='remember' color='primary' />}
               label='Remember me'
@@ -191,4 +214,8 @@ const Register = () => {
   );
 };
 
-export default Register;
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+};
+
+export default connect(null, { setAlert })(Register);
