@@ -3,7 +3,7 @@
 To start the app : "npm run dev"
 
 ## User
-* As a user i want to be having a profile
+* As a user i want to have a profile
 * As a user i want to save jobs to my profile
 * As a user i want to see all jobs posted
 
@@ -30,13 +30,13 @@ To start the app : "npm run dev"
 ** Get Jobs
 * Array containing jobs
 
-## Jobs
-** Get Jobs
-** Post Jobs
-** Get job by id
-** Delete Job/:id
-** Like Job
-** unlike Job
+## Jobs \n
+** Get Jobs \n
+** Post Jobs \n
+** Get job by id \n
+** Delete Job/:id \n
+** Like Job \n
+** unlike Job \n
 
 I will finishing up during the weekend and also update the readme.
 
