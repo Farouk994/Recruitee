@@ -6,6 +6,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Jobs from "./components/Layout/Jobs-Public/Jobs";
 import Recruiter from "./components/Layout/Recruiter/Recruiter";
+import Footer from "./components/Layout/Footer"
 import Alert from "./components/Layout/Alert";
 // Redux
 import { Provider } from "react-redux";
@@ -25,6 +26,7 @@ function App() {
             <Route exact path='/jobs' component={Jobs} />
             <Route exact path='/recruiter' component={Recruiter} />
           </Switch>
+          <Footer/>
         </Router>
       </Fragment>
     </Provider>
