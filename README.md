@@ -31,21 +31,12 @@ To start the app : "npm run dev"
 * Array containing jobs
 
 ## Jobs \n
-<<<<<<< HEAD
 ** Get Jobs
 ** Post Jobs
 ** Get job by id
 ** Delete Job/:id
 ** Like Job
 ** unlike Job
-=======
-** Get Jobs \n
-** Post Jobs \n
-** Get job by id \n
-** Delete Job/:id \n
-** Like Job \n
-** unlike Job \n
->>>>>>> b9273838d28f8f3105c82ee5f8984285972f2200
 
 I will finishing up during the weekend and also update the readme.
 
