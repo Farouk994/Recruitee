@@ -30,7 +30,7 @@ To start the app : "npm run dev"
 ** Get Jobs
 * Array containing jobs
 
-## Jobs
+## Jobs \n
 ** Get Jobs
 ** Post Jobs
 ** Get job by id
@@ -48,4 +48,25 @@ I will finishing up during the weekend and also update the readme.
 ---------------------------------------------------------------------------------------------------------
 
 
+# Profile
+User
+* view jobs
+* apply with one click
+* view all saved jobs and progress
+* 
 
+
+# Recruiter
+* view users
+* view user job requests
+* comment by rejecting or invite user
+* 
+
+
+# Todo
+* Add apply job function
+* View Applications
+* View Responses
+* 
+* Add save job function
+* 

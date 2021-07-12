@@ -90,7 +90,15 @@ const ProfileSchema = new mongoose.Schema({
   jobs: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Job",
+      ref: "job",
+    },
+  ],
+  response: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "recruiter",
+      },
     },
   ],
   social: {
@@ -116,6 +124,6 @@ const ProfileSchema = new mongoose.Schema({
   },
 });
 
-const Profile = mongoose.model("Profile", ProfileSchema);
+const Profile = mongoose.model("profile", ProfileSchema);
 
 module.exports = Profile;

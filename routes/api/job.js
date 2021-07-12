@@ -58,6 +58,7 @@ router.post(
 router.get("/", async (req, res) => {
   try {
     const job = await Job.find().sort({ date: -1 });
+    console.log(job);
     res.json(job);
   } catch (err) {
     console.log(err.message);
@@ -125,6 +126,45 @@ router.delete("/:id", auth, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+// @route   api/job/apply/:id
+// @desc    Apply for job in one click
+// @access  Private
+
+router.post(
+  "/save/:id",
+  [auth, [check()]],
+  checkObjectId("id"),
+  async (req, res) => {
+    try {
+      // Find job associated with user and also find the user by id
+      const user = await User.findById(req.user.id).select("-password");
+      const job = await Job.findById(req.params.id);
+
+      const newApplication = {
+        text: req.body.text,
+        name: req.user.name,
+        avatar: user.avatar,
+        user: req.user.id,
+        interest: `Hi, my name is ${user.name}, I am interested in the position of joining ${job.company} as a ${job.title}. My profile is //link//, please review it and let me know i would be a great fit for this position. Thank you `,
+      };
+      if (
+        job.applications.some(
+          (application) => application.user.toString() === req.user.id
+        )
+      ) {
+        return res
+          .status(400)
+          .json({ msg: "You already applied for this job" });
+      }
+      job.applications.unshift(newApplication);
+      await job.save();
+      res.json(job.applications);
+    } catch (err) {
+      res.status(500).send("Server Error");
+    }
+  }
+);
 
 // @route    PUT api/job/like/:id
 // @desc     Like a job

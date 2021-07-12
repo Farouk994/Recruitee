@@ -14,7 +14,7 @@ router.post(
   [
     check("name", "Name is Required").not().isEmpty(),
     check("email", "Please enter valid Email").isEmail(),
-    check("password", "Enter atleast 6 or more Characters").isLength({
+    check("password", "Enter at least 6 or more Characters").isLength({
       min: 6,
     }),
   ],
@@ -50,7 +50,7 @@ router.post(
         { forceHttps: true }
       );
 
-      // If user email or user doesnt exist then we can create a new one using the User model
+      // If user email or user doesn't exist then we can create a new one using the User model
       user = new User({
         name,
         email,
@@ -80,7 +80,7 @@ router.post(
         }
       );
 
-      // Incase our request doesnt go through, we will be catching errors
+      // Incase our request doesn't go through, we will be catching errors
     } catch (err) {
       console.log(err.message);
       res.status(500).send("Server Error");

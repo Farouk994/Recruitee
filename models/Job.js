@@ -28,6 +28,27 @@ const JobSchema = new mongoose.Schema({
       },
     },
   ],
+  applications: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+      avatar: {
+        type: String,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+      interest :{
+        type : String
+      },
+      interest : {
+        type : String
+      }
+    },
+  ],
   salary: {
     type: Number,
   },
@@ -44,6 +65,6 @@ const JobSchema = new mongoose.Schema({
   },
 });
 
-const Jobs = mongoose.model("Job", JobSchema);
+const Jobs = mongoose.model("job", JobSchema);
 
 module.exports = Jobs;

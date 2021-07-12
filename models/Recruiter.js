@@ -61,6 +61,6 @@ const RecruiterSchema = new mongoose.Schema({
   },
 });
 
-const Recruiter = mongoose.model("Recruiter", RecruiterSchema);
+const Recruiter = mongoose.model("recruiter", RecruiterSchema);
 
 module.exports = Recruiter;
