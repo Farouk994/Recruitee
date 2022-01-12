@@ -1,15 +1,16 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { SyncOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
+import { UserContext } from "../context/index";
 
 const login = () => {
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
    const [loading, setLoading] = useState(false);
 
-   const [state, setState] = useState("");
+   const [state, setState] = useContext(UserContext);
 
    const router = useRouter();
 
@@ -17,16 +18,23 @@ const login = () => {
       e.preventDefault();
       try {
          setLoading(true);
-         const { data } = await axios.post("http://localhost:4000/api/recruiter/login", {
-            email,
-            password,
+         const { data } = await axios.post(
+            "http://localhost:4000/api/recruiter/login",
+            {
+               email,
+               password,
+            }
+         );
+         console.log(data);
+         setState({
+            recruiter: data.recruiter,
+            token: data.token,
          });
-         console.log(data)
-         // setState({
-         //    user: data.user,
-         //    token: data.token,
-         // });
-         router.push("/");
+
+         // Save now in local storage, takes in key and value
+         window.localStorage.setItem("auth", JSON.stringify(data));
+
+         router.push("/dashboard");
       } catch (err) {
          toast.error(err.response.data);
          setLoading(false);
