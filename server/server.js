@@ -8,7 +8,7 @@ const { readdirSync } = require("fs");
 // app.use(app.router);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({ origin: ["http://localhost:3000"] }));
+app.use(cors({ origin: ["http://localhost:3001"] }));
 
 // connect to database
 connectDB();
