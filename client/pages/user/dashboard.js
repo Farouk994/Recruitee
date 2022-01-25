@@ -2,30 +2,45 @@ import React, { useContext, useEffect, useState } from "react";
 import UserRoute from "../../components/routes/UserRoute";
 import { UserContext } from "../../context/index";
 import { useRouter, userRouter } from "next/router";
-import formatDistance from "date-fns/formatDistance";
 import moment from "moment";
+import Table from "../../components/Table";
+import { Modal } from "antd";
+import About from "../../components/RecruiterInfo/About_dashboard";
+import PostJob from "../../components/RecruiterInfo/PostJob_dashboard";
 
 export default function dashboard() {
    const [state, setState] = useContext(UserContext);
    const [current, setCurrent] = useState("");
+   const [okay, setOkay] = useState(false);
+   const [isModalVisible, setIsModalVisible] = useState(false);
    const getData = () => {
       window.localStorage.removeItem("auth");
       setState(null);
    };
+
+   const showModal = () => {
+      setIsModalVisible(true);
+   };
+
+   const handleOk = () => {
+      setIsModalVisible(false);
+   };
+
+   const handleCancel = () => {
+      setIsModalVisible(false);
+   };
+
+   // Handle Post Job Submission
+
    const [content, setContent] = useState("");
 
    const router = useRouter();
-   // console.log(state.user.status);
-
-   const active = () => {
-      setCurrent(state.user.status);
-   };
 
    return (
       // <UserRoute>
       <div>
          {/* <h1>Welcome {state && state.user && state.user.lastName}</h1> */}
-         <div className="bg-gradient-to-br from-blue-600 to-indigo-600">
+         <div className="w-full h-screen bg-gradient-to-br from-blue-600 to-indigo-600 ">
             <div className="w-full text-white bg-main-color">
                <div
                   x-data="{ open: false }"
@@ -60,17 +75,20 @@ export default function dashboard() {
                         </p>
                         <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                            <li className="flex items-center py-3">
-                              <span>Status</span>
+                              <p>
+                                 <span className="text-blue-600 font-lg text-semibold leading-8">
+                                    {}
+                                 </span>{" "}
+                                 Jobs Posted
+                              </p>
                               <span className="ml-auto">
-                                 <span
-                                    className={`${
-                                       state.user.status === "active"
-                                          ? "bg-red-500"
-                                          : "bg-green-500"
-                                    } py-1 px-2 rounded text-white text-sm`}
+                                 <button
+                                    onClick={showModal}
+                                    className="bg-indigo-600
+                                     py-1 px-2 rounded text-white text-sm"
                                  >
-                                    {state.user.status}
-                                 </span>
+                                    Post Job
+                                 </button>
                               </span>
                            </li>
                            <li className="flex items-center py-3">
@@ -95,8 +113,8 @@ export default function dashboard() {
                                  stroke="currentColor"
                               >
                                  <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                    strokeLinejoin="round"
+                                    strokeLinejoin="round"
                                     strokeWidth="2"
                                     d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                                  />
@@ -152,221 +170,33 @@ export default function dashboard() {
                   {/* <!-- Right Side --> */}
                   <div className="w-full md:w-9/12 mx-2 h-64 ">
                      {/* <!-- Profile tab -->
-                <!-- About Section --> */}
-                     <div className="bg-white p-3 shadow-sm rounded-lg ">
-                        <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 ">
-                           <span clas="text-green-500">
-                              <svg
-                                 className="h-5"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 fill="none"
-                                 viewBox="0 0 24 24"
-                                 stroke="currentColor"
-                              >
-                                 <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    strokeWidth="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                 />
-                              </svg>
-                           </span>
-                           <span className="tracking-wide">About</span>
-                        </div>
-                        <div className="text-gray-700">
-                           <div className="grid md:grid-cols-2 text-sm">
-                              <div className="grid grid-cols-2">
-                                 <div className="px-4 py-2 font-semibold">
-                                    First Name
-                                 </div>
-                                 <div className="px-4 py-2">
-                                    {" "}
-                                    {state.user.firstName}
-                                 </div>
-                              </div>
-                              <div className="grid grid-cols-2">
-                                 <div className="px-4 py-2 font-semibold">
-                                    Last Name
-                                 </div>
-                                 <div className="px-4 py-2">
-                                    {" "}
-                                    {state.user.lastName}
-                                 </div>
-                              </div>
-                              <div className="grid grid-cols-2">
-                                 <div className="px-4 py-2 font-semibold">
-                                    Gender
-                                 </div>
-                                 <div className="px-4 py-2">Female</div>
-                              </div>
-                              <div className="grid grid-cols-2">
-                                 <div className="px-4 py-2 font-semibold">
-                                    Contact No.
-                                 </div>
-                                 <div className="px-4 py-2">+11 998001001</div>
-                              </div>
-                              <div className="grid grid-cols-2">
-                                 <div className="px-4 py-2 font-semibold">
-                                    Current Address
-                                 </div>
-                                 <div className="px-4 py-2">
-                                    Beech Creek, PA, Pennsylvania
-                                 </div>
-                              </div>
-                              <div className="grid grid-cols-2">
-                                 <div className="px-4 py-2 font-semibold">
-                                    Permanant Address
-                                 </div>
-                                 <div className="px-4 py-2">
-                                    Arlington Heights, IL, Illinois
-                                 </div>
-                              </div>
-                              <div className="grid grid-cols-2">
-                                 <div className="px-4 py-2 font-semibold">
-                                    Email.
-                                 </div>
-                                 <div className="px-4 py-2">
-                                    <a
-                                       className="text-blue-800"
-                                       href="mailto:jane@example.com"
-                                    >
-                                       jane@example.com
-                                    </a>
-                                 </div>
-                              </div>
-                              <div className="grid grid-cols-2">
-                                 <div className="px-4 py-2 font-semibold">
-                                    Birthday
-                                 </div>
-                                 <div className="px-4 py-2">Feb 06, 1998</div>
-                              </div>
-                           </div>
-                        </div>
-                        <button className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
-                           Show Full Information
-                        </button>
-                     </div>
+                     <!-- About Section --> */}
+                     <About state={state} />
                      {/* <!-- End of about section --> */}
 
                      <div className="my-4"></div>
 
                      {/* <!-- Experience and education --> */}
-                     <div className="bg-white p-3 shadow-sm rounded-lg">
-                        <div className="grid grid-cols-2">
-                           <div>
-                              <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                                 <span clas="text-green-500">
-                                    <svg
-                                       className="h-5"
-                                       xmlns="http://www.w3.org/2000/svg"
-                                       fill="none"
-                                       viewBox="0 0 24 24"
-                                       stroke="currentColor"
-                                    >
-                                       <path
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                          strokeWidth="2"
-                                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                                       />
-                                    </svg>
-                                 </span>
-                                 <span className="tracking-wide">
-                                    Experience
-                                 </span>
-                              </div>
-                              <ul className="list-inside space-y-2">
-                                 <li>
-                                    <div className="text-teal-600">
-                                       Owner at Her Company Inc.
-                                    </div>
-                                    <div className="text-gray-500 text-xs">
-                                       March 2020 - Now
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div className="text-teal-600">
-                                       Owner at Her Company Inc.
-                                    </div>
-                                    <div className="text-gray-500 text-xs">
-                                       March 2020 - Now
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div className="text-teal-600">
-                                       Owner at Her Company Inc.
-                                    </div>
-                                    <div className="text-gray-500 text-xs">
-                                       March 2020 - Now
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div className="text-teal-600">
-                                       Owner at Her Company Inc.
-                                    </div>
-                                    <div className="text-gray-500 text-xs">
-                                       March 2020 - Now
-                                    </div>
-                                 </li>
-                              </ul>
-                           </div>
-                           <div>
-                              <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
-                                 <span clas="text-green-500">
-                                    <svg
-                                       className="h-5"
-                                       xmlns="http://www.w3.org/2000/svg"
-                                       fill="none"
-                                       viewBox="0 0 24 24"
-                                       stroke="currentColor"
-                                    >
-                                       <path
-                                          fill="#fff"
-                                          d="M12 14l9-5-9-5-9 5 9 5z"
-                                       />
-                                       <path
-                                          fill="#fff"
-                                          d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                                       />
-                                       <path
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                          strokeWidth="2"
-                                          d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                                       />
-                                    </svg>
-                                 </span>
-                                 <span className="tracking-wide">
-                                    Education
-                                 </span>
-                              </div>
-                              <ul className="list-inside space-y-2">
-                                 <li>
-                                    <div className="text-teal-600">
-                                       Masters Degree in Oxford
-                                    </div>
-                                    <div className="text-gray-500 text-xs">
-                                       March 2020 - Now
-                                    </div>
-                                 </li>
-                                 <li>
-                                    <div className="text-teal-600">
-                                       Bachelors Degreen in LPU
-                                    </div>
-                                    <div className="text-gray-500 text-xs">
-                                       March 2020 - Now
-                                    </div>
-                                 </li>
-                              </ul>
-                           </div>
-                        </div>
-                        {/* <!-- End of Experience and education grid --> */}
-                     </div>
+
+                     <div className="my-4"></div>
+                     {/* <div className="bg-white p-3 shadow-sm rounded-lg"> */}
+                     <Table />
+                     {/* </div> */}
                      {/* <!-- End of profile tab --> */}
                   </div>
                </div>
             </div>
          </div>
+         <Modal
+            title="Basic Modal"
+            visible={isModalVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            footer={null}
+         >
+            {/* <!-- component --> */}
+            <PostJob />
+         </Modal>
       </div>
       // {/* </UserRoute> */}
    );
