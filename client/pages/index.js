@@ -42,7 +42,7 @@ export default function Home() {
                   </div>
                </div>
             </main>
-         <Update/>
+            <Update />
          </div>
       </div>
    );
