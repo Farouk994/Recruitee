@@ -1,36 +1,45 @@
 const mongoose = require("mongoose");
-// const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
-const RecruiterSchema = new mongoose.Schema({
-   recruiter: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "recruiter",
-   },
-   name: {
+const RecruiterSchema = new Schema({
+   firstName: {
       type: String,
-      trim: true,
       required: true,
+      // unique: true,
+   },
+   lastName: {
+      type: String,
+      required: true,
+      // unique: true,
    },
    email: {
       type: String,
-      trim: true,
       required: true,
       unique: true,
    },
    password: {
       type: String,
       required: true,
-      min: 6,
-      max: 64,
    },
    secret: {
       type: String,
       trim: true,
       required: true,
    },
-   about: {},
-   photo: String,
-   goals: String,
+   // username: {
+   //    type: String,
+   //    unique: true,
+   // },
+   experience: {
+      type: String,
+   },
+   description: [],
+   avatar: {
+      type: String,
+      default:
+         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+   },
+   // profile: { type: mongoose.Schema.ObjectId, ref: "recruiter" },
    company: {
       type: String,
    },
@@ -43,28 +52,31 @@ const RecruiterSchema = new mongoose.Schema({
    status: {
       type: String,
    },
-   description: {
-      type: String,
+   image: {
+      url: String,
+      public_id: String,
    },
-   salary: {
-      type: String,
-   },
-   social: {
-      email: {
-         type: String,
-      },
-      linkedin: {
-         type: String,
-      },
-   },
-//    profile: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "profile",
-//  },
 
+   bio: {
+      type: String,
+   },
+   followers: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+      { type: mongoose.Schema.Types.ObjectId, ref: "recruiter" },
+   ],
+   jobs: [
+      {
+         type: mongoose.Schema.ObjectId,
+         ref: "job",
+         date: {
+            type: Date,
+            default: Date.now(),
+         },
+      },
+   ],
    date: {
       type: Date,
-      default: Date.now,
+      default: Date.now(),
    },
 });
 
