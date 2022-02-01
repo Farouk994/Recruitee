@@ -27,32 +27,38 @@ const About = ({ state }) => {
                <div className="grid md:grid-cols-2 text-sm">
                   <div className="grid grid-cols-2">
                      <div className="px-4 py-2 font-semibold">First Name</div>
-                     <div className="px-4 py-2"> {state.user.firstName}</div>
+                     <div className="px-4 py-2">
+                        {" "}
+                        {state.recruiter.firstName}
+                     </div>
                   </div>
                   <div className="grid grid-cols-2">
                      <div className="px-4 py-2 font-semibold">Last Name</div>
-                     <div className="px-4 py-2"> {state.user.lastName}</div>
+                     <div className="px-4 py-2">
+                        {" "}
+                        {state.recruiter.lastName}
+                     </div>
                   </div>
-                  <div className="grid grid-cols-2">
+                  {/* <div className="grid grid-cols-2">
                      <div className="px-4 py-2 font-semibold">Gender</div>
                      <div className="px-4 py-2">Female</div>
-                  </div>
-                  <div className="grid grid-cols-2">
+                  </div> */}
+                  {/* <div className="grid grid-cols-2">
                      <div className="px-4 py-2 font-semibold">Contact No.</div>
                      <div className="px-4 py-2">+11 998001001</div>
-                  </div>
+                  </div> */}
                   <div className="grid grid-cols-2">
                      <div className="px-4 py-2 font-semibold">
                         Current Address
                      </div>
-                     <div className="px-4 py-2">{state.user.location}</div>
+                     <div className="px-4 py-2">{state.recruiter.location}</div>
                   </div>
-                  <div className="grid grid-cols-2">
+                  {/* <div className="grid grid-cols-2">
                      <div className="px-4 py-2 font-semibold">
                         Permanant Address
                      </div>
-                     <div className="px-4 py-2">{state.user.location}</div>
-                  </div>
+                     <div className="px-4 py-2">{state.recruiter.location}</div>
+                  </div> */}
                   <div className="grid grid-cols-2">
                      <div className="px-4 py-2 font-semibold">Email.</div>
                      <div className="px-4 py-2">
@@ -60,14 +66,14 @@ const About = ({ state }) => {
                            className="text-blue-800"
                            href="mailto:jane@example.com"
                         >
-                           {state.user.email}
+                           {state.recruiter.email}
                         </a>
                      </div>
                   </div>
-                  <div className="grid grid-cols-2">
+                  {/* <div className="grid grid-cols-2">
                      <div className="px-4 py-2 font-semibold">Birthday</div>
                      <div className="px-4 py-2">Feb 06, 1998</div>
-                  </div>
+                  </div> */}
                </div>
             </div>
             <button className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
