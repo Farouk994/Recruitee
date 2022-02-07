@@ -1,5 +1,7 @@
 # Recruitee
 
+## STILL WORK IN PROGRESS
+
 To start the app : "npm run dev"
 
 ## User
@@ -70,3 +72,21 @@ User
 * 
 * Add save job function
 * 
+
+# Resources
+* React Icons - https://react-icons.github.io/react-icons/icons?name=ai
+
+* Profile Images - https://thispersondoesnotexist.com/
+
+* Tailwind Shuffle Components - https://shuffle.dev/components/tailwind/all/banners
+
+* Protective Routes 
+
+
+# Next Task
+* Post Job
+* Get all jobs 
+* Get all jobs by recruiter
+* Delete Job
+* 
+* Get
