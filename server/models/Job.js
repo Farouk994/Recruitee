@@ -1,22 +1,30 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const JobSchema = new mongoose.Schema({
-   recruiter: {
-      type: mongoose.Schema.ObjectId,
+const Job = new Schema({
+   user: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
    },
    title: {
       type: String,
+      required: true,
    },
    company: {
       type: String,
+      required: true,
    },
-   title: {
+   name: {
       type: String,
    },
-   avatar: {
+   image: {
       type: String,
    },
    location: {
+      type: String,
+      required: true,
+   },
+   firstName: {
       type: String,
    },
    likes: [
@@ -44,6 +52,9 @@ const JobSchema = new mongoose.Schema({
          interest: {
             type: String,
          },
+         name: {
+            type: String,
+         },
       },
    ],
    salary: {
@@ -52,16 +63,12 @@ const JobSchema = new mongoose.Schema({
    description: {
       type: String,
    },
-   recruiter: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "recruiter",
-   },
    date: {
       type: Date,
-      default: Date.now,
+      default: Date.now(),
    },
 });
 
-const Jobs = mongoose.model("job", JobSchema);
+const job = mongoose.model("job", Job);
 
-module.exports = Jobs;
+module.exports = job;

@@ -1,45 +1,14 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
-const RecruiterSchema = new Schema({
-   firstName: {
-      type: String,
-      required: true,
-      // unique: true,
+const Recruiter = new Schema({
+   user: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
    },
-   lastName: {
-      type: String,
-      required: true,
-      // unique: true,
-   },
-   email: {
-      type: String,
-      required: true,
-      unique: true,
-   },
-   password: {
-      type: String,
-      required: true,
-   },
-   secret: {
-      type: String,
-      trim: true,
-      required: true,
-   },
-   // username: {
-   //    type: String,
-   //    unique: true,
-   // },
-   experience: {
+   status: {
       type: String,
    },
-   description: [],
-   avatar: {
-      type: String,
-      default:
-         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-   },
-   // profile: { type: mongoose.Schema.ObjectId, ref: "recruiter" },
    company: {
       type: String,
    },
@@ -52,34 +21,20 @@ const RecruiterSchema = new Schema({
    status: {
       type: String,
    },
+   bio: {
+      type: String,
+   },
    image: {
       url: String,
       public_id: String,
    },
-
-   bio: {
-      type: String,
-   },
-   followers: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-      { type: mongoose.Schema.Types.ObjectId, ref: "recruiter" },
-   ],
-   jobs: [
-      {
-         type: mongoose.Schema.ObjectId,
-         ref: "job",
-         date: {
-            type: Date,
-            default: Date.now(),
-         },
-      },
-   ],
+   followers: [{ type: Schema.Types.ObjectId, ref: "user" }],
    date: {
       type: Date,
       default: Date.now(),
    },
 });
 
-const Recruiter = mongoose.model("recruiter", RecruiterSchema);
+const recruiter = mongoose.model("recruiter", Recruiter);
 
-module.exports = Recruiter;
+module.exports = recruiter;

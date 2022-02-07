@@ -1,16 +1,14 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
+const User = new Schema({
    firstName: {
       type: String,
       required: true,
-      // unique: true,
    },
    lastName: {
       type: String,
       required: true,
-      // unique: true,
    },
    email: {
       type: String,
@@ -21,25 +19,6 @@ const UserSchema = new Schema({
       type: String,
       required: true,
    },
-   secret: {
-      type: String,
-      trim: true,
-      required: true,
-   },
-   // username: {
-   //    type: String,
-   //    unique: true,
-   // },
-   experience: {
-      type: String,
-   },
-   description: [],
-   avatar: {
-      type: String,
-      default:
-         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
-   },
-   // profile: { type: mongoose.Schema.ObjectId, ref: "recruiter" },
    company: {
       type: String,
    },
@@ -52,21 +31,21 @@ const UserSchema = new Schema({
    status: {
       type: String,
    },
+   bio: {
+      type: String,
+   },
    image: {
       url: String,
       public_id: String,
    },
+   followers: [{ type: Schema.Types.ObjectId, ref: "user" }],
 
-   bio: {
-      type: String,
-   },
-   followers: [],
    date: {
       type: Date,
       default: Date.now(),
    },
 });
 
-const User = mongoose.model("user", UserSchema);
+const user = mongoose.model("user", User);
 
-module.exports = User;
+module.exports = user;

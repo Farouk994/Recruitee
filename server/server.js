@@ -1,26 +1,43 @@
 const express = require("express");
-const connectDB = require("./config/db");
-const app = express();
+const mongoose = require("mongoose");
 const cors = require("cors");
 const { readdirSync } = require("fs");
+// const verifyJWT = require("./middleware/verifyJWT");
+const cookieParser = require("cookie-parser")
 
-// Middleware
-// app.use(app.router);
+require("dotenv").config();
+
+const app = express();
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({ origin: ["http://localhost:3001"] }));
+app.use(cors({ origin: ["http://localhost:3000"] }));
 
-// connect to database
-connectDB();
+// middleware for cookies
+// app.use(cookieParser())
 
-// auto-load routes
 readdirSync("./routes").map((r) => {
    app.use("/api", require(`./routes/${r}`));
 });
 
-// Port
-const PORT = process.env.PORT || 4000;
+// app.use(verifyJWT); 
+
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
-   console.log(" ==> Listening to Port " + PORT);
+   console.log(`Listening to Port ${PORT}`);
 });
+
+mongoose
+   .connect(process.env.DATABASE, {
+      useNewUrlParser: true,
+      //   useFindAndModify: false,
+      useUnifiedTopology: true,
+      //   useCreateIndex: true,
+   })
+   .then(() => {
+      console.log("DB has been connected ===>");
+   })
+   .catch((err) => {
+      console.log("Connection failed X", err.message);
+   });
