@@ -1,16 +1,18 @@
 import axios from "axios";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import { SyncOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
-import { UserContext } from "../context/index";
+import { UserContext } from "../context/AuthProvider";
 
 const login = () => {
-   const [email, setEmail] = useState("");
-   const [password, setPassword] = useState("");
-   const [loading, setLoading] = useState(false);
-
    const [state, setState] = useContext(UserContext);
+
+   const [email, setEmail] = useState("max@gmail.com");
+   const [password, setPassword] = useState("111111");
+   // const [errMsg, setErrMsg] = useState("");
+
+   const [loading, setLoading] = useState(false);
 
    const router = useRouter();
 
@@ -19,27 +21,45 @@ const login = () => {
       try {
          setLoading(true);
          const { data } = await axios.post(
-            "http://localhost:4000/api/recruiter/login",
+            "http://localhost:5000/api/login/account",
             {
                email,
                password,
             }
          );
-         console.log(data);
+         setEmail("");
+         setPassword("");
+
+         //  update context
          setState({
-            recruiter: data.recruiter,
+            user: data.user,
             token: data.token,
          });
-
-         // Save now in local storage, takes in key and value
+         //  saving in local storage
          window.localStorage.setItem("auth", JSON.stringify(data));
 
-         router.push("/dashboard");
+         // Save now in local storage, takes in key and value
+         //   window.localStorage.setItem("auth", JSON.stringify(data));
+
+         //  if (auth && auth.token)
+        //  router.push("/");
       } catch (err) {
          toast.error(err.response.data);
          setLoading(false);
       }
    };
+
+   if (state && state.token) router.push("/");
+
+   // useEffect(() => {
+   //    userRef.current.focus();
+   // }, []);
+
+   // useEffect(() => {
+   //    setErrMsg("");
+   // }, [email, password]);
+
+   // if (state && state.token) router.push("/");
    return (
       <div>
          {/* <!-- component --> */}
@@ -51,21 +71,21 @@ const login = () => {
                         Register
                      </h1>
                      {/* <div>
-                        <label
-                           for="username"
-                           className="block mb-1 text-gray-600 font-semibold"
-                        >
-                           Username
-                        </label>
-                        <input
-                           type="text"
-                           className="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full"
-                           value={name}
-                           onChange={(e) => {
-                              setEmail(e.target.value);
-                           }}
-                        />
-                     </div> */}
+                         <label
+                            for="username"
+                            className="block mb-1 text-gray-600 font-semibold"
+                         >
+                            Username
+                         </label>
+                         <input
+                            type="text"
+                            className="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full"
+                            value={name}
+                            onChange={(e) => {
+                               setEmail(e.target.value);
+                            }}
+                         />
+                      </div> */}
                      <div>
                         <label
                            htmlFor="email"

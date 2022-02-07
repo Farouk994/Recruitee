@@ -1,18 +1,16 @@
 import "../styles/globals.css";
 import "tailwindcss/tailwind.css";
-import { UserProvider } from "../context";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "antd/dist/antd.css";
-import Head from "next/head";
-import Navbar from "../components/Navbar";
-import "@popperjs/core";
-import Footer from "../components/Footer";
+import { ToastContainer } from "react-toastify";
+import Navbar from "../components/Navbar/Navbar";
+import Footer from "../components/Footer/Footer";
+import { UserProvider } from "../context/AuthProvider";
+import { UserContext } from "../context/AuthProvider";
 
 function MyApp({ Component, pageProps }) {
    return (
       <UserProvider>
-         <Head></Head>
          <Navbar />
          <ToastContainer
             position="top-center"
@@ -27,7 +25,7 @@ function MyApp({ Component, pageProps }) {
          />
 
          <Component {...pageProps} />
-         {/* <Footer/> */}
+         <Footer />
       </UserProvider>
    );
 }

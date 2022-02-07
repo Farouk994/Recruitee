@@ -1,315 +1,566 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { SyncOutlined } from "@ant-design/icons";
-import { Multiselect } from "multiselect-react-dropdown";
+import { CameraOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Avatar } from "antd";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Modal } from "antd";
 import Link from "next/link";
+import { UserContext } from "../context/AuthProvider";
+import { useRouter } from "next/router";
 
 const register = () => {
-   const [name, setName] = useState("");
+   const [firstName, setFirstName] = useState("");
+   const [lastName, setLastName] = useState("");
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
-   const [secret, setSecret] = useState("");
-   const [okay, setOkay] = useState(false);
+   const [status, setStatus] = useState("");
+   const [company, setCompany] = useState("");
+   const [location, setLocation] = useState("");
+   const [website, setWebsite] = useState("");
+   const [experience, setExperience] = useState("");
+   const [bio, setBio] = useState("");
+   //    const [secret, setSecret] = useState("");
+   const [ok, setOkay] = useState(false);
    const [loading, setLoading] = useState(false);
+   const [image, setImage] = useState({});
+   const [uploading, setUploading] = useState(false);
+   const [state] = useContext(UserContext);
+   const router = useRouter();
 
    const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log(name, email, password, secret);
+      console.log(
+         firstName,
+         lastName,
+         email,
+         password,
+         bio,
+         location,
+         status,
+         experience,
+         company,
+         website,
+         //  secret,
+         image
+      );
       try {
          setLoading(true);
          const { data } = await axios.post(
-            "http://localhost:4000/api/register/recruiter",
+            "http://localhost:5000/api/register/account",
             {
-               name,
+               firstName,
+               lastName,
                email,
                password,
-               secret,
+               bio,
+               location,
+               experience,
+               company,
+               website,
+               //    secret,
+               image,
             }
          );
-         setName("");
-         setEmail("");
-         setPassword("");
-         setSecret("");
-         setOkay(data.ok);
-         console.log(data);
+         console.log("User Registered ==>", data);
+         if (data.error) {
+            toast.error(data.error);
+            setLoading(false);
+         } else {
+            setLastName("");
+            setFirstName("");
+            setEmail("");
+            setPassword("");
+            // setSecret("");
+            setBio("");
+            setStatus("");
+            setExperience("");
+            setCompany("");
+            setWebsite("");
+            setOkay(data.ok);
+            setLoading(false);
+            console.log(data);
+         }
       } catch (err) {
          toast.error(err.response.data);
          setLoading(false);
       }
    };
 
+   if (state && state.token) router.push("/");
+
+   const handleImage = async (e) => {
+      const file = e.target.files[0];
+      let formData = new FormData();
+      formData.append("image", file);
+      // formData.append("content", content);
+      console.log([...formData]);
+      setUploading(true);
+      try {
+         const { data } = await axios.post(
+            "http://localhost:5000/api/upload-image",
+            formData
+         );
+         // console.log(data);
+         setImage({
+            url: data.url,
+            public_id: data.public_id,
+         });
+         setUploading(false);
+      } catch (err) {
+         console.log(err.message);
+         setUploading(false);
+      }
+   };
    return (
       <div>
          {/* <!-- component --> */}
-         <section className="h-screen bg-gradient-to-br from-blue-600 to-indigo-600 flex justify-center items-center w-full">
-            <img
-               className="hidden lg:block absolute inset-0 mt-32"
-               src="zospace-assets/lines/line-mountain.svg"
-               alt=""
-            />
-            <img
-               className="hidden lg:block absolute inset-y-0 right-0 -mr-40 -mt-32"
-               src="zospace-assets/lines/line-right-long.svg"
-               alt=""
-            />
-            <div className="relative container px-4 mx-auto">
-               <div className="max-w-5xl mx-auto">
-                  <div className="flex flex-wrap items-center -mx-4">
-                     <div className="w-full lg:w-1/2 px-4 mb-16 lg:mb-0">
-                        <div className="max-w-md">
-                           <span className="text-lg text-gray-200 font-bold">
-                              Register Account
-                           </span>
-                           <h2 className="mt-8 mb-12 text-5xl font-bold font-heading text-white">
-                              Start Your Journey Today!
-                           </h2>
-                           <p className="text-lg text-gray-200">
-                              <span>The brown fox jumps over</span>
-                              <span className="text-white">the lazy dog.</span>
-                           </p>
-                        </div>
-                     </div>
-                     <div className="w-full lg:w-1/2 px-4">
-                        <div className="px-6 lg:px-20 py-12 lg:py-24 dark:bg-gray-800 rounded-lg">
-                           <form onSubmit={handleSubmit}>
-                              <h3 className="mb-10 text-2xl text-white font-bold font-heading">
-                                 Register Account
-                              </h3>
-                              <div className="flex items-center pl-6 mb-3 bg-white rounded-full">
-                                 <span className="inline-block pr-3 py-2 border-r border-gray-50">
-                                    <svg
-                                       className="w-5 h-5"
-                                       width="20"
-                                       height="21"
-                                       viewBox="0 0 20 21"
-                                       fill="none"
-                                       xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                       <path
-                                          fillRule="evenodd"
-                                          clipRule="evenodd"
-                                          d="M7.29593 0.492188C4.81333 0.492188 2.80078 2.50474 2.80078 4.98734C2.80078 7.46993 4.81333 9.48248 7.29593 9.48248C9.77851 9.48248 11.7911 7.46993 11.7911 4.98734C11.7911 2.50474 9.77851 0.492188 7.29593 0.492188ZM3.69981 4.98734C3.69981 3.00125 5.30985 1.39122 7.29593 1.39122C9.28198 1.39122 10.892 3.00125 10.892 4.98734C10.892 6.97342 9.28198 8.58346 7.29593 8.58346C5.30985 8.58346 3.69981 6.97342 3.69981 4.98734Z"
-                                          fill="black"
-                                       ></path>
-                                       <path
-                                          d="M5.3126 10.3816C2.38448 10.3816 0.103516 13.0524 0.103516 16.2253V19.8214C0.103516 20.0696 0.304772 20.2709 0.55303 20.2709H14.0385C14.2867 20.2709 14.488 20.0696 14.488 19.8214C14.488 19.5732 14.2867 19.3719 14.0385 19.3719H1.00255V16.2253C1.00255 13.4399 2.98344 11.2806 5.3126 11.2806H9.27892C10.5443 11.2806 11.6956 11.9083 12.4939 12.9335C12.6465 13.1293 12.9289 13.1644 13.1248 13.0119C13.3207 12.8594 13.3558 12.5769 13.2033 12.381C12.2573 11.1664 10.8566 10.3816 9.27892 10.3816H5.3126Z"
-                                          fill="black"
-                                       ></path>
-                                       <rect
-                                          x="15"
-                                          y="15"
-                                          width="5"
-                                          height="1"
-                                          rx="0.5"
-                                          fill="black"
-                                       ></rect>
-                                       <rect
-                                          x="17"
-                                          y="18"
-                                          width="5"
-                                          height="1"
-                                          rx="0.5"
-                                          transform="rotate(-90 17 18)"
-                                          fill="black"
-                                       ></rect>
-                                    </svg>
-                                 </span>
-                                 <input
-                                    className="w-full pl-4 pr-6 py-4 font-bold placeholder-gray-900 rounded-r-full focus:outline-none"
-                                    type="text"
-                                    placeholder="Enter Name"
-                                    onChange={(e) => {
-                                       setName(e.target.value);
-                                    }}
-                                 />
-                              </div>
-                              <div className="flex items-center pl-6 mb-3 bg-white rounded-full">
-                                 <span className="inline-block pr-3 py-2 border-r border-gray-50">
-                                    <svg
-                                       className="w-5 h-5"
-                                       width="20"
-                                       height="21"
-                                       viewBox="0 0 20 21"
-                                       fill="none"
-                                       xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                       <path
-                                          fillRule="evenodd"
-                                          clipRule="evenodd"
-                                          d="M7.29593 0.492188C4.81333 0.492188 2.80078 2.50474 2.80078 4.98734C2.80078 7.46993 4.81333 9.48248 7.29593 9.48248C9.77851 9.48248 11.7911 7.46993 11.7911 4.98734C11.7911 2.50474 9.77851 0.492188 7.29593 0.492188ZM3.69981 4.98734C3.69981 3.00125 5.30985 1.39122 7.29593 1.39122C9.28198 1.39122 10.892 3.00125 10.892 4.98734C10.892 6.97342 9.28198 8.58346 7.29593 8.58346C5.30985 8.58346 3.69981 6.97342 3.69981 4.98734Z"
-                                          fill="black"
-                                       ></path>
-                                       <path
-                                          d="M5.3126 10.3816C2.38448 10.3816 0.103516 13.0524 0.103516 16.2253V19.8214C0.103516 20.0696 0.304772 20.2709 0.55303 20.2709H14.0385C14.2867 20.2709 14.488 20.0696 14.488 19.8214C14.488 19.5732 14.2867 19.3719 14.0385 19.3719H1.00255V16.2253C1.00255 13.4399 2.98344 11.2806 5.3126 11.2806H9.27892C10.5443 11.2806 11.6956 11.9083 12.4939 12.9335C12.6465 13.1293 12.9289 13.1644 13.1248 13.0119C13.3207 12.8594 13.3558 12.5769 13.2033 12.381C12.2573 11.1664 10.8566 10.3816 9.27892 10.3816H5.3126Z"
-                                          fill="black"
-                                       ></path>
-                                       <rect
-                                          x="15"
-                                          y="15"
-                                          width="5"
-                                          height="1"
-                                          rx="0.5"
-                                          fill="black"
-                                       ></rect>
-                                       <rect
-                                          x="17"
-                                          y="18"
-                                          width="5"
-                                          height="1"
-                                          rx="0.5"
-                                          transform="rotate(-90 17 18)"
-                                          fill="black"
-                                       ></rect>
-                                    </svg>
-                                 </span>
-                                 <input
-                                    className="w-full pl-4 pr-6 py-4 font-bold placeholder-gray-900 rounded-r-full focus:outline-none"
-                                    type="email"
-                                    placeholder="Email"
-                                    onChange={(e) => {
-                                       setEmail(e.target.value);
-                                    }}
-                                 />
-                              </div>
-                              <div className="flex items-center pl-6 mb-3 bg-white rounded-full">
-                                 <span className="inline-block pr-3 py-2 border-r border-gray-50">
-                                    <svg
-                                       className="w-5 h-5"
-                                       width="17"
-                                       height="21"
-                                       viewBox="0 0 17 21"
-                                       fill="none"
-                                       xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                       <path
-                                          d="M15.184 8.48899H15.2011V6.25596C15.2011 2.6897 12.3193 0 8.49924 0C4.67919 0 1.7974 2.6897 1.7974 6.25596V8.48899H1.81568C0.958023 9.76774 0.457031 11.3049 0.457031 12.9569C0.457031 17.3921 4.06482 21 8.49924 21C12.9341 21 16.5424 17.3922 16.5428 12.9569C16.5428 11.3049 16.0417 9.76774 15.184 8.48899ZM2.69098 6.25596C2.69098 3.14895 5.13312 0.893578 8.49924 0.893578C11.8654 0.893578 14.3075 3.14895 14.3075 6.25596V7.39905C12.8423 5.86897 10.7804 4.91468 8.49966 4.91468C6.21837 4.91468 4.15607 5.86946 2.69098 7.40017V6.25596ZM8.49966 20.1064C4.55762 20.1064 1.35061 16.8989 1.35061 12.9569C1.35061 9.01534 4.5572 5.80826 8.49924 5.80826C12.4422 5.80826 15.6488 9.01534 15.6492 12.9569C15.6492 16.8989 12.4426 20.1064 8.49966 20.1064Z"
-                                          fill="black"
-                                       ></path>
-                                       <path
-                                          d="M8.49957 8.93567C7.26775 8.93567 6.26562 9.93779 6.26562 11.1696C6.26562 11.8679 6.60247 12.5283 7.1592 12.9474V14.7439C7.1592 15.4829 7.76062 16.0843 8.49957 16.0843C9.2381 16.0843 9.83994 15.4829 9.83994 14.7439V12.9474C10.3966 12.5278 10.7335 11.8679 10.7335 11.1696C10.7335 9.93779 9.7309 8.93567 8.49957 8.93567ZM9.16793 12.3228C9.03032 12.4023 8.94636 12.5502 8.94636 12.7088V14.7439C8.94636 14.9906 8.74572 15.1907 8.49957 15.1907C8.25342 15.1907 8.05278 14.9906 8.05278 14.7439V12.7088C8.05278 12.5502 7.96833 12.4032 7.83072 12.3228C7.41026 12.078 7.1592 11.6468 7.1592 11.1696C7.1592 10.4307 7.76062 9.82925 8.49957 9.82925C9.2381 9.82925 9.83994 10.4307 9.83994 11.1696C9.83994 11.6468 9.58881 12.078 9.16793 12.3228Z"
-                                          fill="black"
-                                       ></path>
-                                    </svg>
-                                 </span>
-                                 <input
-                                    className="w-full pl-4 pr-6 py-4 font-bold placeholder-gray-900 rounded-r-full focus:outline-none"
-                                    type="password"
-                                    placeholder="Password"
-                                    onChange={(e) => {
-                                       setPassword(e.target.value);
-                                    }}
-                                 />
-                              </div>
-                              <div className="flex items-center pl-6 mb-6 bg-white rounded-full">
-                                 <span className="inline-block pr-3 py-2 border-r border-gray-50">
-                                    <svg
-                                       className="w-5 h-5"
-                                       width="20"
-                                       height="21"
-                                       viewBox="0 0 20 21"
-                                       fill="none"
-                                       xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                       <path
-                                          d="M15.6243 13.5625C15.3939 13.5625 15.2077 13.7581 15.2077 14V16.4517C15.2077 18.2573 14.0443 20.125 12.0973 20.125H5.42975C3.56848 20.125 1.87435 18.3741 1.87435 16.4517V10.5H15.6243C15.8547 10.5 16.041 10.3044 16.041 10.0625C16.041 9.82058 15.8547 9.625 15.6243 9.625H15.2077V5.95175C15.2077 2.39183 12.8635 0 9.37435 0H7.70768C4.21855 0 1.87435 2.39183 1.87435 5.95175V9.625H1.45768C1.22728 9.625 1.04102 9.82058 1.04102 10.0625V16.4517C1.04102 18.8322 3.13268 21 5.42975 21H12.0972C14.3089 21 16.0409 19.0023 16.0409 16.4517V14C16.041 13.7581 15.8547 13.5625 15.6243 13.5625ZM2.70768 5.95175C2.70768 2.86783 4.67022 0.875 7.70768 0.875H9.37435C12.4119 0.875 14.3743 2.86783 14.3743 5.95175V9.625H2.70768V5.95175Z"
-                                          fill="black"
-                                       ></path>
-                                       <path
-                                          d="M18.8815 9.3711C18.7482 9.17377 18.4878 9.12827 18.3003 9.26701L8.58655 16.4919L6.75235 14.5655C6.58942 14.3944 6.32608 14.3944 6.16322 14.5655C6.00028 14.7366 6.00028 15.0131 6.16322 15.1842L8.24655 17.3717C8.32695 17.4561 8.43362 17.4999 8.54115 17.4999C8.62488 17.4999 8.70868 17.4732 8.78282 17.4194L18.7828 9.98185C18.9703 9.84143 19.0141 9.56843 18.8815 9.3711Z"
-                                          fill="black"
-                                       ></path>
-                                    </svg>
-                                 </span>
-                                 {/* <input
-                                    className="w-full pl-4 pr-6 py-4 font-bold placeholder-gray-900 rounded-r-full focus:outline-none"
-                                    type="password"
-                                    placeholder="Repeat password"
-                                 /> */}
-                                 {/* <label class="font-semibold leading-none text-gray-300">
-                                    Status
-                                 </label> */}
-                                 <select className="w-full pl-4 pr-6 py-4 font-bold placeholder-gray-300 rounded-r-full focus:outline-none">
-                                    <option>---Choose Question---</option>
-                                    <option>
-                                       What is your favorite color?
-                                    </option>
-                                    <option>What is your dogs name?</option>
-                                    <option>Where do you live?</option>
-                                 </select>
-                              </div>
-                              <div className="flex items-center pl-6 mb-3 bg-white rounded-full">
-                                 <span className="inline-block pr-3 py-2 border-r border-gray-50">
-                                    <svg
-                                       className="w-5 h-5"
-                                       width="17"
-                                       height="21"
-                                       viewBox="0 0 17 21"
-                                       fill="none"
-                                       xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                       <path
-                                          d="M15.184 8.48899H15.2011V6.25596C15.2011 2.6897 12.3193 0 8.49924 0C4.67919 0 1.7974 2.6897 1.7974 6.25596V8.48899H1.81568C0.958023 9.76774 0.457031 11.3049 0.457031 12.9569C0.457031 17.3921 4.06482 21 8.49924 21C12.9341 21 16.5424 17.3922 16.5428 12.9569C16.5428 11.3049 16.0417 9.76774 15.184 8.48899ZM2.69098 6.25596C2.69098 3.14895 5.13312 0.893578 8.49924 0.893578C11.8654 0.893578 14.3075 3.14895 14.3075 6.25596V7.39905C12.8423 5.86897 10.7804 4.91468 8.49966 4.91468C6.21837 4.91468 4.15607 5.86946 2.69098 7.40017V6.25596ZM8.49966 20.1064C4.55762 20.1064 1.35061 16.8989 1.35061 12.9569C1.35061 9.01534 4.5572 5.80826 8.49924 5.80826C12.4422 5.80826 15.6488 9.01534 15.6492 12.9569C15.6492 16.8989 12.4426 20.1064 8.49966 20.1064Z"
-                                          fill="black"
-                                       ></path>
-                                       <path
-                                          d="M8.49957 8.93567C7.26775 8.93567 6.26562 9.93779 6.26562 11.1696C6.26562 11.8679 6.60247 12.5283 7.1592 12.9474V14.7439C7.1592 15.4829 7.76062 16.0843 8.49957 16.0843C9.2381 16.0843 9.83994 15.4829 9.83994 14.7439V12.9474C10.3966 12.5278 10.7335 11.8679 10.7335 11.1696C10.7335 9.93779 9.7309 8.93567 8.49957 8.93567ZM9.16793 12.3228C9.03032 12.4023 8.94636 12.5502 8.94636 12.7088V14.7439C8.94636 14.9906 8.74572 15.1907 8.49957 15.1907C8.25342 15.1907 8.05278 14.9906 8.05278 14.7439V12.7088C8.05278 12.5502 7.96833 12.4032 7.83072 12.3228C7.41026 12.078 7.1592 11.6468 7.1592 11.1696C7.1592 10.4307 7.76062 9.82925 8.49957 9.82925C9.2381 9.82925 9.83994 10.4307 9.83994 11.1696C9.83994 11.6468 9.58881 12.078 9.16793 12.3228Z"
-                                          fill="black"
-                                       ></path>
-                                    </svg>
-                                 </span>
-                                 <input
-                                    className="w-full pl-4 pr-6 py-4 font-bold placeholder-gray-900 rounded-r-full focus:outline-none"
-                                    type="text"
-                                    placeholder="Secret"
-                                    onChange={(e) => {
-                                       setSecret(e.target.value);
-                                    }}
-                                 />
-                              </div>
-                              <div className="inline-flex mb-10">
-                                 <input className="mr-4" type="checkbox" />
-                                 <p className="-mt-2 text-sm text-gray-200">
-                                    By singning up, you agree to our{" "}
-                                    <a className="text-white" href="#">
-                                       Terms, Data Policy
-                                    </a>
-                                    and{" "}
-                                    <a className="text-white" href="#">
-                                       Cookies.
-                                    </a>
+         <div className="w-full bg-gray-800 overflow-hidden">
+            <div className="bg-gradient-to-b from-blue-800 to-blue-600 h-96"></div>
+            <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mb-12">
+               <div className="bg-gray-900 w-full shadow rounded p-8 sm:p-12 -mt-72">
+                  <p className="text-3xl font-bold leading-7 text-center text-white">
+                     Create User Profile
+                  </p>
+                  <form onSubmit={handleSubmit}>
+                     <div className="grid grid-cols-1 mt-5 mx-7">
+                        <label className="uppercase md:text-sm text-xs text-gray-300 text-light font-semibold mb-1">
+                           Upload Photo
+                        </label>
+                        <div className="flex items-center justify-center w-full">
+                           <label className="flex flex-col border-4 border-dashed w-full h-32 hover:bg-blue-500 hover:border-purple-100 group">
+                              <div className="flex flex-col items-center justify-center pt-7">
+                                 <svg
+                                    className="w-10 h-10 text-purple-400 group-hover:text-purple-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                 >
+                                    <path
+                                       strokeLinecap="round"
+                                       strokeLinejoin="round"
+                                       strokeWidth="2"
+                                       d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                    ></path>
+                                 </svg>
+                                 <p className="lowercase text-sm text-gray-300 group-hover:text-white-900 pt-1 tracking-wider">
+                                    {image && image.url ? (
+                                       <Avatar
+                                          size={40}
+                                          src={image.url}
+                                          className="mt-1"
+                                       />
+                                    ) : uploading ? (
+                                       <LoadingOutlined className="mt-2" />
+                                    ) : (
+                                       <CameraOutlined className="mt-2" />
+                                    )}
                                  </p>
                               </div>
-                              <button className="py-4 w-full bg-pink-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200">
-                                 {loading ? (
-                                    <SyncOutlined spin className="py-1" />
-                                 ) : (
-                                    "Get Started"
-                                 )}
-                              </button>
-                           </form>
+                              <input
+                                 type="file"
+                                 className="hidden"
+                                 onChange={handleImage}
+                              />
+                           </label>
                         </div>
                      </div>
-                  </div>
+                     <div className="md:flex items-center mt-12">
+                        <div className="w-full md:w-1/2 flex flex-col">
+                           <label
+                              htmlFor="name"
+                              className="font-semibold leading-none text-gray-300"
+                           >
+                              First Name
+                           </label>
+                           <input
+                              className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"
+                              onChange={(e) => {
+                                 setFirstName(e.target.value);
+                              }}
+                              type="text"
+                              id="name"
+                              name="name"
+                              placeholder=""
+                              // className="w-full px-4 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
+                           />
+                        </div>
+                        <div className="w-full md:w-1/2 flex flex-col md:ml-6 md:mt-0 mt-4">
+                           <label
+                              htmlFor="name"
+                              className="font-semibold leading-none text-gray-300"
+                           >
+                              Last Name
+                           </label>
+                           <input
+                              onChange={(e) => {
+                                 setLastName(e.target.value);
+                              }}
+                              type="text"
+                              id="lastName"
+                              name="lastName"
+                              placeholder=""
+                              className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"
+                           />
+                        </div>
+                     </div>
+                     <div className="md:flex items-center mt-8">
+                        <div className="w-full flex flex-col">
+                           <label
+                              htmlFor="name"
+                              className="font-semibold leading-none text-gray-300"
+                           >
+                              Email
+                           </label>
+                           <input
+                              onChange={(e) => {
+                                 setEmail(e.target.value);
+                              }}
+                              type="email"
+                              id="email"
+                              name="email"
+                              placeholder=""
+                              className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"
+                           />
+                        </div>
+                     </div>
+                     <div className="md:flex items-center mt-8">
+                        <div className="w-full flex flex-col">
+                           <label
+                              htmlFor="name"
+                              className="font-semibold leading-none text-gray-300"
+                           >
+                              Password
+                           </label>
+                           <input
+                              onChange={(e) => {
+                                 setPassword(e.target.value);
+                              }}
+                              type="password"
+                              id="password"
+                              name="password"
+                              placeholder=""
+                              className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"
+                           />
+                        </div>
+                     </div>
+                     {/* <div className="relative pt-4">
+                <label
+                   htmlFor="name"
+                   className="text-base leading-7 text-blueGray-500"
+                >
+                   Input Date
+                </label>
+                <input
+                   type="date"
+                   id="date"
+                   name="date"
+                   placeholder="name"
+                   className="w-full px-4 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
+                />
+             </div> */}
+                     {/* <div className="relative pt-4">
+                <label
+                   htmlFor="name"
+                   className="text-base leading-7 text-blueGray-500"
+                >
+                   Input Color
+                </label>
+                <input
+                   type="color"
+                   id="color"
+                   name="color"
+                   placeholder="name"
+                   className="w-full px-4 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
+                />
+             </div> */}
+
+                     {/* <div className="relative pt-4">
+                <label
+                   htmlFor="name"
+                   className="text-base leading-7 text-blueGray-500"
+                >
+                   Input Range
+                </label>
+                <input
+                   type="range"
+                   id="range"
+                   name="range"
+                   placeholder="name"
+                   className="w-full px-0 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
+                />
+             </div> */}
+                     {/* <div className="md:flex items-center mt-8">
+                        <div className="w-full flex flex-col">
+                           <label
+                              htmlFor="name"
+                              className="font-semibold leading-none text-gray-300"
+                           >
+                              Select Security Question
+                           </label>
+                           <select className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded">
+                              <option></option>
+                              <option>What is your dog name?</option>
+                              <option>Which city where you born?</option>
+                              <option>Where are you located</option>
+                           </select>
+                        </div>
+                     </div> */}
+                     {/* TODO: SECRET */}
+                     {/* <div className="md:flex items-center mt-8">
+                        <div className="w-full flex flex-col">
+                           <label
+                              htmlFor="name"
+                              className="font-semibold leading-none text-gray-300"
+                           > */}
+                     {/* Secret{""}{" "} */}
+                     {/* <small>
+                            <em>"Incase you have forgotten your password"</em>
+                         </small> */}
+                     {/* </label>
+                           <input
+                              onChange={(e) => {
+                                 setSecret(e.target.value);
+                              }}
+                              type="text"
+                              id="secret"
+                              name="secret"
+                              placeholder=""
+                              className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"
+                           />
+                        </div>
+                     </div> */}
+                     {/* <div className="md:flex items-center mt-8">
+                        <div className="w-full flex flex-col">
+                           <label
+                              htmlFor="name"
+                              className="font-semibold leading-none text-gray-300"
+                           >
+                              Select Status
+                           </label>
+                           <select
+                              className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"
+                              onChange={(e) => {
+                                 setStatus(e.target.value);
+                              }}
+                           >
+                              <option></option>
+                              <option>Active</option>
+                              <option>Unavailable</option>
+                              <option>N/A</option>
+                           </select>
+                        </div>
+                     </div> */}
+                     <div className="md:flex items-center mt-12">
+                        <div className="w-full md:w-1/2 flex flex-col">
+                           <label
+                              htmlFor="name"
+                              className="font-semibold leading-none text-gray-300"
+                           >
+                              Company
+                           </label>
+                           <input
+                              onChange={(e) => {
+                                 setCompany(e.target.value);
+                              }}
+                              type="text"
+                              id="company"
+                              name="company"
+                              placeholder=""
+                              className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"
+                           />
+                        </div>
+                        <div className="w-full md:w-1/2 flex flex-col md:ml-6 md:mt-0 mt-4">
+                           <label
+                              htmlFor="name"
+                              className="font-semibold leading-none text-gray-300"
+                           >
+                              Website
+                           </label>
+                           <input
+                              onChange={(e) => {
+                                 setWebsite(e.target.value);
+                              }}
+                              type="text"
+                              id="website"
+                              name="website"
+                              placeholder=""
+                              className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"
+                           />
+                        </div>
+                     </div>
+                     {/* <div className="md:flex items-center mt-8">
+                        <div className="w-full flex flex-col">
+                           <label
+                              htmlFor="name"
+                              className="font-semibold leading-none text-gray-300"
+                           >
+                              Experience
+                           </label>
+                           <select
+                              className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"
+                              onChange={(e) => {
+                                 setExperience(e.target.value);
+                              }}
+                           >
+                              <option></option>
+                              <option>1 - 3 Years</option>
+                              <option>4 - 6 Years</option>
+                              <option>7 and Above</option>
+                           </select>
+                        </div>
+                     </div> */}
+                     <div className="md:flex items-center mt-8">
+                        <div className="w-full flex flex-col">
+                           <label
+                              htmlFor="location"
+                              className="font-semibold leading-none text-gray-300"
+                           >
+                              Location
+                           </label>
+                           <input
+                              onChange={(e) => {
+                                 setLocation(e.target.value);
+                              }}
+                              type="text"
+                              id="location"
+                              name="location"
+                              placeholder="location"
+                              className="leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 bg-gray-800 rounded"
+                           />
+                        </div>
+                     </div>
+                     {/* <div className="flex flex-wrap mt-4 mb-6 -mx-3"> */}
+                     <div className="w-full flex flex-col mt-8">
+                        <label
+                           className="font-semibold leading-none text-gray-300"
+                           htmlFor="description"
+                        >
+                           Bio{" "}
+                        </label>
+                        <textarea
+                           onChange={(e) => {
+                              setBio(e.target.value);
+                           }}
+                           className="h-40 text-base leading-none text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 bg-gray-800 border-0 rounded"
+                           id="description"
+                           type="text"
+                           name="bio"
+                           placeholder="Bio..."
+                        ></textarea>
+                     </div>
+                     {/* </div> */}
+                     <div className="flex">
+                        <label className="flex items-center">
+                           <input type="checkbox" className="form-checkbox " />
+                           <span className="ml-2 text-gray-300">
+                              Agree to Terms and Conditions{" "}
+                           </span>
+                        </label>
+                     </div>
+                     <div className="flex items-center w-full pt-4 mb-4">
+                        <button className="w-full py-3 text-base text-white transition duration-500 ease-in-out transform bg-blue-600 border-blue-600 rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blue-800 ">
+                           {" "}
+                           {loading ? (
+                              <SyncOutlined spin className="py-1" />
+                           ) : (
+                              "Create Profile"
+                           )}{" "}
+                        </button>
+                     </div>
+                     <hr className="my-4 border-gray-200" />
+                     <span className="px-4 py-1 mx-auto -mt-8 text-xs text-black transition duration-500 ease-in-out transform bg-gray-200 rounded-lg">
+                        Or continue with{" "}
+                     </span>
+                     <div className="inline-flex items-center justify-between w-full pt-8 ">
+                        <button className="w-auto px-8 py-2 mr-2 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 hover:bg-blueGray-200 focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 focus:border-blueGray-700 focus:bg-blueGray-800 ">
+                           <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="icon icon-tabler icon-tabler-brand-github"
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                           >
+                              <path
+                                 stroke="none"
+                                 d="M0 0h24v24H0z"
+                                 fill="none"
+                              ></path>
+                              <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"></path>
+                           </svg>
+                        </button>
+                        <button className="w-auto px-8 py-2 mr-2 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 hover:bg-blueGray-200 focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 focus:border-blueGray-700 focus:bg-blueGray-800 ">
+                           <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="icon icon-tabler icon-tabler-brand-gitlab"
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                           >
+                              <path
+                                 stroke="none"
+                                 d="M0 0h24v24H0z"
+                                 fill="none"
+                              ></path>
+                              <path d="M21 14l-9 7l-9 -7l3 -11l3 7h6l3 -7z"></path>
+                           </svg>
+                        </button>
+                        <button className="w-auto px-8 py-2 mr-2 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 hover:bg-blueGray-200 focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 focus:border-blueGray-700 focus:bg-blueGray-800 ">
+                           <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="icon icon-tabler icon-tabler-brand-twitter"
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                           >
+                              <path
+                                 stroke="none"
+                                 d="M0 0h24v24H0z"
+                                 fill="none"
+                              ></path>
+                              <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+                           </svg>
+                        </button>
+                     </div>
+                  </form>
                </div>
+               <Modal
+                  title="Congratulations"
+                  visible={ok}
+                  onCancel={() => {
+                     setOkay(false);
+                  }}
+                  footer={null}
+               >
+                  <p>You have Created your Profile</p>
+                  <Link href="/">
+                     <button className="py-4 w-full bg-pink-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200">
+                        {loading ? (
+                           <SyncOutlined spin className="py-1" />
+                        ) : (
+                           "Login Here"
+                        )}
+                     </button>
+                  </Link>
+               </Modal>
             </div>
-         </section>
-         <Modal
-            title="Congratulations"
-            visible={okay}
-            onCancel={() => {
-               setOkay(false);
-            }}
-            footer={null}
-         >
-            <p>You have registered</p>
-            <Link href="/createProfile">
-               <button className="py-4 w-full bg-pink-500 hover:bg-blue-600 text-white font-bold rounded-full transition duration-200">
-                  Create Profile
-               </button>
-            </Link>
-         </Modal>
+         </div>
       </div>
    );
 };
