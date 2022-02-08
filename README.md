@@ -1,6 +1,6 @@
 # Recruitee
 
-## STILL WORK IN PROGRESS
+##  WORK IN PROGRESS
 
 To start the app : "npm run dev"
 
