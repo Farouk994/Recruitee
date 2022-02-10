@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Update from "../components/Update";
+import Perks from "../components/Landing/perks";
 
 export default function Home() {
    return (
@@ -41,8 +41,9 @@ export default function Home() {
                      </div>
                   </div>
                </div>
+               {/* <Perks /> */}
             </main>
-            <Update />
+            {/* <Update /> */}
          </div>
       </div>
    );
