@@ -4,7 +4,8 @@ const {
    getAllJobs,
    getJobById,
    applyForJob,
-   getJobsByUser,
+   getJobsByUsers,
+   getJobsByUserID,
 } = require("../controllers/jobController");
 const checkObjectId = require("../middleware/checkObjectId");
 const verifyJWT = require("../middleware/verifyJWT");
@@ -18,7 +19,9 @@ router.post("/job/new", verifyJWT, postNewJob);
 
 router.put("/job/apply/:id", verifyJWT, checkObjectId("id"), applyForJob);
 
-router.get("/jobs/user/:id", verifyJWT, getJobsByUser);
+router.get("/jobs/user/:id", verifyJWT, getJobsByUsers);
+
+router.get("/jobs/job-posts/", verifyJWT, getJobsByUserID);
 
 // router.get("/job/by-user", verifyJWT, getAllJobsByUser);
 

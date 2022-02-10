@@ -3,12 +3,12 @@ const User = require("../models/User");
 
 // Post new Job
 const postNewJob = async (req, res) => {
-   const { title, company, location, salary, description } = req.body;
-   if (!title) res.status(400).send("Title is required");
-   if (!company) res.status(400).send("Company is required");
-   if (!location) res.status(400).send("Location is required");
-   if (!salary) res.status(400).send("Salary is required");
-   if (!description) res.status(400).send("Description is required ");
+   const { title, company, location, salary, description, logo } = req.body;
+   // if (!title) res.status(400).send("Title is required");
+   // if (!company) res.status(400).send("Company is required");
+   // if (!location) res.status(400).send("Location is required");
+   // if (!salary) res.status(400).send("Salary is required");
+   // if (!description) res.status(400).send("Description is required ");
 
    try {
       const user = await User.findById(req.user.id).select("-password");
@@ -20,11 +20,17 @@ const postNewJob = async (req, res) => {
          location,
          salary,
          description,
-         user: req.user.id,
+         logo,
+         image: user.image,
+         user: req.user._id,
+         users:req.user._id,
+         id:user._id,
          name: `${user.firstName} ${user.lastName}`,
       });
       const job = await newJob.save();
       res.json(job);
+      console.log(job);
+      console.log(req.body);
    } catch (err) {
       console.log(err.message);
       res.status(500).send(
@@ -45,11 +51,27 @@ const getAllJobs = async (req, res) => {
 };
 
 // Get all Jobs by User
-const getJobsByUser = async (req, res) => {
+const getJobsByUsers = async (req, res) => {
    try {
       const jobs = await Job.find({ user: req.params.id }).sort({ date: -1 });
       console.log(jobs);
       if (!jobs)
+         return res.status(400).send("No jobs at the moment, post job here");
+      res.json(jobs);
+   } catch (err) {
+      console.log(err.message);
+      res.status(500).send(
+         "Something went wrong while getting jobs for this user"
+      );
+   }
+};
+
+// Get all Jobs by User ID
+const getJobsByUserID = async (req, res) => {
+   try {
+      const jobs = await Job.find({ user: req.user.id }).sort({ date: -1 });
+      // console.log(jobs);
+      if (!jobs === "")
          return res.status(400).send("No jobs at the moment, post job here");
       res.json(jobs);
    } catch (err) {
@@ -85,7 +107,11 @@ const applyForJob = async (req, res) => {
          return res.status(400).send("You already applied for this Job!");
       }
       // Add job to array
-      job.applications.unshift({ user: req.user.id, name: user.firstName });
+      job.applications.unshift({
+         user: req.user.id,
+         name: user.firstName,
+         image: user.image,
+      });
 
       await job.save();
       return res.json(job.applications);
@@ -99,4 +125,11 @@ const applyForJob = async (req, res) => {
 
 //
 
-module.exports = { postNewJob, getAllJobs, getJobById, applyForJob, getJobsByUser};
+module.exports = {
+   postNewJob,
+   getAllJobs,
+   getJobById,
+   applyForJob,
+   getJobsByUsers,
+   getJobsByUserID,
+};

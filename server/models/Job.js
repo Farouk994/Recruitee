@@ -6,23 +6,30 @@ const Job = new Schema({
       type: Schema.Types.ObjectId,
       ref: "user",
    },
+   users: {
+      type: String,
+   },
    title: {
       type: String,
-      required: true,
+      // required: true,
    },
    company: {
       type: String,
-      required: true,
+      // required: true,
    },
    name: {
       type: String,
    },
-   image: {
-      type: String,
+   logo: {
+      url: String,
+      public_id: String,
    },
    location: {
       type: String,
-      required: true,
+      // required: true,
+   },
+   id: {
+      type: String,
    },
    firstName: {
       type: String,
