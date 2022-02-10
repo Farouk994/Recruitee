@@ -1,9 +1,12 @@
 import React, { useContext } from "react";
 import moment from "moment";
 import { UserContext } from "../../context/AuthProvider";
+import Link from "next/link";
 
-const JobCard = ({ jobs }) => {
-   const [state] = useContext(UserContext);
+const JobCard = ({ jobs, jobClicked }) => {
+   // const [state] = useContext(UserContext);
+   console.log(jobs);
+   {console.log(jobs.user)}
    return (
       <div>
          {jobs.map((job, index) => (
@@ -30,20 +33,28 @@ const JobCard = ({ jobs }) => {
                      <p className="mt-2 text-gray-600">{job.description}</p>
                   </div>
                   <div className="flex items-center justify-between mt-4">
-                     <a href="#" className="text-blue-500 hover:underline">
+                     <a
+                        href="#"
+                        className="text-blue-500 hover:underline"
+                        onClick={jobClicked}
+                        key={`/job/${job._id}`}
+                     >
                         Read more
                      </a>
                      <div>
                         <a href="#" className="flex items-center">
                            <img
                               // src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"
-                              src={state.user.image && state.user.image.url}
+                              src={job?.image?.url}
                               alt="avatar"
                               className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block"
                            />
-                           <h1 className="font-bold text-gray-700 hover:underline">
+                           <Link
+                              href={`/userProfile/${job.user}`}
+                              className="font-bold text-gray-700 hover:underline"
+                           >
                               {job.name}
-                           </h1>
+                           </Link>
                         </a>
                      </div>
                   </div>
