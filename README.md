@@ -1,6 +1,6 @@
 # Recruitee
 
-## STILL WORK IN PROGRESS
+##  WORK IN PROGRESS
 
 <details>
   <summary>Home Page </summary>
@@ -117,9 +117,3 @@ User
 
 # Next Task
 
--  Post Job
--  Get all jobs
--  Get all jobs by recruiter
--  Delete Job
--
--  Get
