@@ -4,24 +4,24 @@
 
 <details>
   <summary>Home Page </summary>
-  <img src="./client/public/rec.jpg" alt= "new profile page">
+  <img src="./client/public/rec.png" alt= "new profile page">
 
 </details>
 <details>
   <summary>Login Page</summary>
-  <img src="./client/public/login.jpg" alt= "schools">
+  <img src="./client/public/login.png" alt= "login">
 </details>
 <details>
   <summary>Register for an Account</summary>
-  <img src="./client/public/register.jpg" alt= "schoolbyid">
+  <img src="./client/public/register.png" alt= "register">
 </details>
 <details>
   <summary>dashboard</summary>
-  <img src="./client/public/dash.jpg" alt= "downloaddoc">
+  <img src="./client/public/dash.png" alt= "dash">
 </details>
 <details>
   <summary>jobs</summary>
-  <img src="./client/public/jobs.jpg" alt= "downloaddoc">
+  <img src="./client/public/jobs.png" alt= "jobs">
 </details>
 
 To start the app : "npm run dev"
